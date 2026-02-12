@@ -657,63 +657,14 @@ docker-compose logs -f
 - Hot reload for rapid development
 - Material Design 3 support
 
----
-
-## Contributing
-
-This is currently a hackathon project. Contributions, issues, and feature requests are welcome!
-
-1. Fork the project
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
----
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## Team
-
-- [Your Name] - Project Lead and Full Stack Developer
-- [Team Member 2] - AI/ML Engineer (LangGraph)
-- [Team Member 3] - Frontend Developer (Flutter)
-- [Team Member 4] - Backend Developer (FastAPI)
 
 ---
 
 ## Acknowledgments
 
 - Inspired by the 86% of college students struggling with time management
-- Built for the Unitopia Hackathon 2026
-- Powered by LangGraph and Google Gemini
+- Built for the Wehack Hackathon 2026
 - Statistics from academic research on student time management
-
----
-
-## Contact
-
-For questions or feedback, reach out:
-- Email: your.email@example.com
-- Project Link: https://github.com/yourusername/unitopia-scheduler
-
----
-
-## Hackathon Pitch Summary
-
-**Problem:** 86% of students struggle with time management, 54% are stressed because of it. Poor scheduling wastes 10+ hours per week.
-
-**Solution:** LangGraph-powered multi-agent system generates optimized timetables in minutes, reducing gaps from 3 hours to 45 minutes, saving admins 90% of scheduling time.
-
-**Tech:** Flutter + PostgreSQL + LangGraph = Intelligent, explainable, scalable scheduling with full transparency into AI decision-making.
-
-**Impact:** Transform university scheduling from chaos to clarity. Better schedules lead to better time management, reduced stress, and academic success.
-
-**Vision:** Every student's entire academic life, perfectly timed. That's Unitopia.
 
 ---
 
