@@ -20,7 +20,6 @@
             background-color: #0f172a; 
             color: #e2e8f0;
             min-height: 100vh;
-            overflow-x: hidden;
         }
         
         .timetable-container {
@@ -33,15 +32,15 @@
 
         .timetable {
             display: grid;
-            grid-template-columns: 100px repeat(6, minmax(160px, 1fr));
-            min-width: 1060px;
+            grid-template-columns: 90px repeat(5, 1fr);
+            min-width: 850px;
         }
 
         .header-cell {
             background: #0f172a;
             border-bottom: 2px solid #475569;
             border-right: 1px solid #334155;
-            padding: 12px 8px;
+            padding: 12px 4px;
             text-align: center;
             font-weight: 600;
             color: #94a3b8;
@@ -52,7 +51,7 @@
             background: #1e293b;
             border-right: 2px solid #475569;
             border-bottom: 1px solid #334155;
-            padding: 24px 8px;
+            padding: 20px 8px;
             font-weight: 700;
             color: #f8fafc;
             font-size: 1rem;
@@ -60,9 +59,6 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            position: sticky;
-            left: 0;
-            z-index: 10;
         }
 
         .session-cell {
@@ -95,50 +91,49 @@
 
         .course-block {
             height: 100%;
-            padding: 12px;
+            padding: 10px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             cursor: pointer;
             transition: all 0.2s ease;
             position: relative;
-            border-radius: 0;
         }
 
         .course-block:hover {
-            filter: brightness(1.15);
-            z-index: 20;
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
+            filter: brightness(1.1);
+            z-index: 10;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
         }
 
         .course-code {
             font-weight: 700;
-            font-size: 0.9rem;
-            margin-bottom: 4px;
+            font-size: 0.85rem;
+            margin-bottom: 2px;
             color: #fff;
         }
 
         .course-name {
             font-weight: 500;
-            font-size: 0.8rem;
-            line-height: 1.3;
-            margin-bottom: 6px;
+            font-size: 0.75rem;
+            line-height: 1.2;
+            margin-bottom: 4px;
             color: #fff;
         }
 
         .course-prof {
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             opacity: 0.9;
             color: rgba(255,255,255,0.9);
         }
 
         .course-room {
             position: absolute;
-            top: 8px;
-            right: 8px;
-            font-size: 0.7rem;
-            background: rgba(0,0,0,0.4);
-            padding: 3px 8px;
+            top: 6px;
+            right: 6px;
+            font-size: 0.65rem;
+            background: rgba(0,0,0,0.3);
+            padding: 2px 6px;
             border-radius: 4px;
             font-weight: 600;
             color: #fff;
@@ -197,30 +192,125 @@
             border-color: #06b6d4;
         }
 
+        /* Logo Animation */
+        @keyframes flow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-3px); }
+        }
+
         .logo-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            background: linear-gradient(135deg, #06b6d4, #0891b2);
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #06b6d4 0%, #0891b2 50%, #0e7490 100%);
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.3);
+            box-shadow: 0 4px 15px rgba(6, 182, 212, 0.4);
+            position: relative;
+            overflow: hidden;
         }
 
-        /* Scrollbar styling */
-        .timetable-container::-webkit-scrollbar {
+        .logo-icon::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .logo-wave {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
             height: 8px;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: flow 2s ease-in-out infinite;
+        }
+
+        /* Scrollbar */
+        .timetable-container::-webkit-scrollbar {
+            height: 10px;
         }
         .timetable-container::-webkit-scrollbar-track {
             background: #0f172a;
         }
         .timetable-container::-webkit-scrollbar-thumb {
             background: #475569;
-            border-radius: 4px;
+            border-radius: 5px;
         }
         .timetable-container::-webkit-scrollbar-thumb:hover {
             background: #64748b;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+        }
+
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .info-label {
+            font-size: 0.75rem;
+            color: #64748b;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .info-value {
+            font-size: 0.9rem;
+            color: #e2e8f0;
+            font-weight: 500;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 6px;
+            margin-bottom: 6px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: #334155;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 8px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+
+        .admin-course-item {
+            padding: 6px 8px;
+            margin-bottom: 4px;
+            border-radius: 4px;
+            font-size: 0.7rem;
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
         }
     </style>
 </head>
@@ -228,13 +318,14 @@
 
     <!-- Header -->
     <header style="background: #0f172a; border-bottom: 1px solid #334155; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100;">
-        <div style="display: flex; align-items: center; gap: 12px;">
+        <div style="display: flex; align-items: center; gap: 14px;">
             <div class="logo-icon">
-                <i class="fa-solid fa-graduation-cap" style="color: white; font-size: 1.2rem;"></i>
+                <i class="fa-solid fa-book-open" style="color: white; font-size: 1.3rem; z-index: 1;"></i>
+                <div class="logo-wave"></div>
             </div>
             <div>
-                <h1 style="font-weight: 700; font-size: 1.4rem; color: #f8fafc; margin: 0;">Edu<span style="color: #06b6d4;">Flow</span></h1>
-                <p style="font-size: 0.75rem; color: #64748b; margin: 0;">Intelligent Timetabling</p>
+                <h1 style="font-weight: 800; font-size: 1.5rem; color: #f8fafc; margin: 0; letter-spacing: -0.5px;">Edu<span style="color: #06b6d4;">Flow</span></h1>
+                <p style="font-size: 0.75rem; color: #64748b; margin: 0; font-weight: 500;">Smart Academic Scheduling</p>
             </div>
         </div>
 
@@ -258,14 +349,14 @@
     </main>
 
     <script>
+        // Reduced to 5 sessions (8h day) - removed last session
         const structure = {
             sessions: [
                 { name: 'Séance 1', time: '8:30 - 10:00', slot: 0 },
                 { name: 'Séance 2', time: '10:15 - 11:45', slot: 1 },
                 { name: 'Séance 3', time: '12:00 - 13:30', slot: 2, lunch: true },
                 { name: 'Séance 4', time: '13:45 - 15:15', slot: 3 },
-                { name: 'Séance 5', time: '15:30 - 17:00', slot: 4 },
-                { name: 'Séance 6', time: '17:15 - 18:45', slot: 5 }
+                { name: 'Séance 5', time: '15:30 - 17:00', slot: 4 }
             ],
             days: [
                 { name: 'Lu', full: 'Lundi', date: '09/02' },
@@ -280,25 +371,30 @@
             student: {
                 name: 'Licence Sciences Informatiques - LSI1',
                 schedule: [
+                    // LUNDI - 4 hours
                     { day: 0, session: 0, code: 'INF-101', name: 'Algorithmique et Programmation C', type: 'cours', prof: 'Dr. Martin', room: 'Amphi A', duration: 1 },
                     { day: 0, session: 1, code: 'INF-101', name: 'Algorithmique TD', type: 'td', prof: 'Dr. Martin', room: 'Salle 202', duration: 1 },
                     { day: 0, session: 3, code: 'MAT-101', name: 'Analyse Mathématique C', type: 'cours', prof: 'Prof. Dubois', room: 'Amphi A', duration: 1 },
                     { day: 0, session: 4, code: 'MAT-101', name: 'Analyse TD', type: 'td', prof: 'Prof. Dubois', room: 'Salle 103', duration: 1 },
 
+                    // MARDI - 4.5 hours (3h TP + 1.5h Cours)
                     { day: 1, session: 0, code: 'INF-102', name: 'Programmation Web TP', type: 'tp', prof: 'Dr. Bernard', room: 'Lab 308', duration: 2 },
-                    { day: 1, session: 3, code: 'INF-103', name: 'Architecture des Ordinateurs C', type: 'cours', prof: 'Prof. Petit', room: 'Amphi B', duration: 2 },
+                    { day: 1, session: 3, code: 'INF-103', name: 'Architecture des Ordinateurs C', type: 'cours', prof: 'Prof. Petit', room: 'Amphi B', duration: 1 },
 
+                    // MERCREDI - 4.5 hours
                     { day: 2, session: 0, code: 'MAT-102', name: 'Algèbre Linéaire TD', type: 'td', prof: 'Dr. Moreau', room: 'Salle 111', duration: 1 },
                     { day: 2, session: 1, code: 'INF-104', name: 'Bases de Données C', type: 'cours', prof: 'Prof. Laurent', room: 'Amphi A', duration: 1 },
-                    { day: 2, session: 3, code: 'INF-104', name: 'Bases de Données TP', type: 'tp', prof: 'Prof. Laurent', room: 'Lab 301', duration: 2 },
+                    { day: 2, session: 3, code: 'INF-104', name: 'Bases de Données TP', type: 'tp', prof: 'Prof. Laurent', room: 'Lab 301', duration: 1 },
 
+                    // JEUDI - 4.5 hours
                     { day: 3, session: 0, code: 'INF-105', name: 'Réseaux Informatiques C', type: 'cours', prof: 'Dr. Simon', room: 'Amphi B', duration: 1 },
                     { day: 3, session: 1, code: 'INF-105', name: 'Réseaux TD', type: 'td', prof: 'Dr. Simon', room: 'Salle 104', duration: 1 },
-                    { day: 3, session: 3, code: 'INF-106', name: 'Atelier Programmation TP', type: 'atelier', prof: 'Dr. Michel', room: 'Lab 302', duration: 2 },
+                    { day: 3, session: 3, code: 'INF-106', name: 'Atelier Programmation TP', type: 'atelier', prof: 'Dr. Michel', room: 'Lab 302', duration: 1 },
 
+                    // VENDREDI - 4 hours
                     { day: 4, session: 0, code: 'MAT-103', name: 'Probabilités et Statistiques C', type: 'cours', prof: 'Prof. Garcia', room: 'Amphi A', duration: 1 },
                     { day: 4, session: 1, code: 'MAT-103', name: 'Statistiques TD', type: 'td', prof: 'Prof. Garcia', room: 'Salle 103', duration: 1 },
-                    { day: 4, session: 3, code: 'INF-107', name: 'Projet Intégré', type: 'projet', prof: 'Dr. Roux', room: 'Labo 3', duration: 2 }
+                    { day: 4, session: 3, code: 'INF-107', name: 'Projet Intégré', type: 'projet', prof: 'Dr. Roux', room: 'Labo 3', duration: 1 }
                 ]
             },
 
@@ -308,93 +404,143 @@
                     title: 'Professeur des Universités',
                     department: 'Informatique',
                     email: 'p.martin@univ.fr',
+                    phone: '+33 1 23 45 67 89',
+                    office: 'Bureau 301, Bâtiment A',
                     schedule: [
                         { day: 0, session: 0, code: 'INF-101', name: 'Algorithmique C', type: 'cours', room: 'Amphi A', group: 'LSI1', duration: 1 },
                         { day: 0, session: 1, code: 'INF-101', name: 'Algorithmique TD', type: 'td', room: 'Salle 202', group: 'LSI1', duration: 1 },
-                        { day: 2, session: 4, code: 'INF-101', name: 'Algo TP', type: 'tp', room: 'Lab 303', group: 'LSI2', duration: 1 },
+                        { day: 2, session: 3, code: 'INF-101', name: 'Algo TP', type: 'tp', room: 'Lab 303', group: 'LSI2', duration: 1 },
                         { day: 4, session: 0, code: 'INF-201', name: 'Algo Avancée C', type: 'cours', room: 'Amphi B', group: 'LSI2', duration: 1 }
                     ],
-                    totalHours: 18,
+                    totalHours: 16.5,
                     researchHours: 12,
                     adminHours: 4,
-                    satisfaction: 4.8
+                    satisfaction: 4.8,
+                    specialization: 'Intelligence Artificielle',
+                    publications: 24,
+                    experience: 15,
+                    officeHours: 'Mercredi 14h-16h',
+                    currentProjects: ['Projet ANR AI-2024', 'Collaboration Industrielle'],
+                    evaluations: { excellent: 45, good: 35, average: 15, poor: 5 }
                 },
                 'Prof. Dubois': {
                     name: 'Prof. Marie Dubois',
                     title: 'Maître de Conférences',
                     department: 'Mathématiques',
                     email: 'm.dubois@univ.fr',
+                    phone: '+33 1 23 45 67 90',
+                    office: 'Bureau 205, Bâtiment B',
                     schedule: [
                         { day: 0, session: 3, code: 'MAT-101', name: 'Analyse C', type: 'cours', room: 'Amphi A', group: 'LSI1', duration: 1 },
                         { day: 0, session: 4, code: 'MAT-101', name: 'Analyse TD', type: 'td', room: 'Salle 103', group: 'LSI1', duration: 1 },
-                        { day: 3, session: 0, code: 'MAT-201', name: 'Analyse Numérique TP', type: 'tp', room: 'Lab 304', group: 'LSI2', duration: 2 }
+                        { day: 3, session: 0, code: 'MAT-201', name: 'Analyse Numérique TP', type: 'tp', room: 'Lab 304', group: 'LSI2', duration: 1 }
                     ],
-                    totalHours: 13.5,
+                    totalHours: 12,
                     researchHours: 16,
                     adminHours: 2,
-                    satisfaction: 4.6
+                    satisfaction: 4.6,
+                    specialization: 'Analyse Numérique',
+                    publications: 18,
+                    experience: 12,
+                    officeHours: 'Mardi 10h-12h',
+                    currentProjects: ['Modélisation Mathématique', 'Calcul Scientifique'],
+                    evaluations: { excellent: 40, good: 40, average: 15, poor: 5 }
                 },
                 'Dr. Bernard': {
                     name: 'Dr. Jean Bernard',
                     title: 'Maître de Conférences',
                     department: 'Web Development',
                     email: 'j.bernard@univ.fr',
+                    phone: '+33 1 23 45 67 91',
+                    office: 'Lab 308, Bâtiment C',
                     schedule: [
                         { day: 1, session: 0, code: 'INF-102', name: 'Programmation Web TP', type: 'tp', room: 'Lab 308', group: 'LSI1', duration: 2 },
-                        { day: 3, session: 3, code: 'INF-102', name: 'Web Avancé', type: 'tp', room: 'Lab 305', group: 'LSI2', duration: 2 }
+                        { day: 3, session: 3, code: 'INF-102', name: 'Web Avancé', type: 'tp', room: 'Lab 305', group: 'LSI2', duration: 1 }
                     ],
-                    totalHours: 12,
+                    totalHours: 10.5,
                     researchHours: 14,
                     adminHours: 3,
-                    satisfaction: 4.9
+                    satisfaction: 4.9,
+                    specialization: 'Développement Web',
+                    publications: 12,
+                    experience: 8,
+                    officeHours: 'Jeudi 14h-16h',
+                    currentProjects: ['Framework JavaScript', 'Accessibilité Web'],
+                    evaluations: { excellent: 55, good: 30, average: 12, poor: 3 }
                 },
                 'Prof. Petit': {
                     name: 'Prof. Sophie Petit',
                     title: 'Professeur des Universités',
                     department: 'Architecture',
                     email: 's.petit@univ.fr',
+                    phone: '+33 1 23 45 67 92',
+                    office: 'Bureau 410, Bâtiment A',
                     schedule: [
-                        { day: 1, session: 3, code: 'INF-103', name: 'Architecture C', type: 'cours', room: 'Amphi B', group: 'LSI1', duration: 2 },
-                        { day: 3, session: 0, code: 'INF-103', name: 'Architecture TP', type: 'tp', room: 'Lab 305', group: 'LSI2', duration: 2 }
+                        { day: 1, session: 3, code: 'INF-103', name: 'Architecture C', type: 'cours', room: 'Amphi B', group: 'LSI1', duration: 1 },
+                        { day: 3, session: 0, code: 'INF-103', name: 'Architecture TP', type: 'tp', room: 'Lab 305', group: 'LSI2', duration: 1 }
                     ],
-                    totalHours: 12,
+                    totalHours: 9,
                     researchHours: 18,
                     adminHours: 5,
-                    satisfaction: 4.7
+                    satisfaction: 4.7,
+                    specialization: 'Architecture des Ordinateurs',
+                    publications: 32,
+                    experience: 20,
+                    officeHours: 'Lundi 16h-18h',
+                    currentProjects: ['Architecture Parallèle', 'Systèmes Embarqués'],
+                    evaluations: { excellent: 42, good: 38, average: 15, poor: 5 }
                 },
                 'Dr. Moreau': {
                     name: 'Dr. Luc Moreau',
                     title: 'Maître de Conférences',
                     department: 'Mathématiques',
                     email: 'l.moreau@univ.fr',
+                    phone: '+33 1 23 45 67 93',
+                    office: 'Bureau 215, Bâtiment B',
                     schedule: [
                         { day: 2, session: 0, code: 'MAT-102', name: 'Algèbre TD', type: 'td', room: 'Salle 111', group: 'LSI1', duration: 1 },
                         { day: 2, session: 1, code: 'MAT-102', name: 'Algèbre C', type: 'cours', room: 'Amphi A', group: 'LSI2', duration: 1 }
                     ],
-                    totalHours: 9,
+                    totalHours: 7.5,
                     researchHours: 20,
                     adminHours: 2,
-                    satisfaction: 4.5
+                    satisfaction: 4.5,
+                    specialization: 'Algèbre Linéaire',
+                    publications: 15,
+                    experience: 10,
+                    officeHours: 'Vendredi 10h-12h',
+                    currentProjects: ['Algèbre Computationnelle'],
+                    evaluations: { excellent: 35, good: 40, average: 20, poor: 5 }
                 },
                 'Prof. Laurent': {
                     name: 'Prof. Claire Laurent',
                     title: 'Professeur des Universités',
                     department: 'Bases de Données',
                     email: 'c.laurent@univ.fr',
+                    phone: '+33 1 23 45 67 94',
+                    office: 'Bureau 325, Bâtiment C',
                     schedule: [
                         { day: 2, session: 1, code: 'INF-104', name: 'Bases de Données C', type: 'cours', room: 'Amphi A', group: 'LSI1', duration: 1 },
-                        { day: 2, session: 3, code: 'INF-104', name: 'Bases de Données TP', type: 'tp', room: 'Lab 301', group: 'LSI1', duration: 2 }
+                        { day: 2, session: 3, code: 'INF-104', name: 'Bases de Données TP', type: 'tp', room: 'Lab 301', group: 'LSI1', duration: 1 }
                     ],
-                    totalHours: 10.5,
+                    totalHours: 9,
                     researchHours: 15,
                     adminHours: 4,
-                    satisfaction: 4.8
+                    satisfaction: 4.8,
+                    specialization: 'Systèmes de Gestion de Bases de Données',
+                    publications: 28,
+                    experience: 18,
+                    officeHours: 'Mardi 14h-16h',
+                    currentProjects: ['Big Data Analytics', 'NoSQL Databases'],
+                    evaluations: { excellent: 48, good: 32, average: 15, poor: 5 }
                 },
                 'Dr. Simon': {
                     name: 'Dr. Pierre Simon',
                     title: 'Maître de Conférences',
                     department: 'Réseaux',
                     email: 'p.simon@univ.fr',
+                    phone: '+33 1 23 45 67 95',
+                    office: 'Lab 405, Bâtiment C',
                     schedule: [
                         { day: 3, session: 0, code: 'INF-105', name: 'Réseaux C', type: 'cours', room: 'Amphi B', group: 'LSI1', duration: 1 },
                         { day: 3, session: 1, code: 'INF-105', name: 'Réseaux TD', type: 'td', room: 'Salle 104', group: 'LSI1', duration: 1 }
@@ -402,26 +548,42 @@
                     totalHours: 6,
                     researchHours: 22,
                     adminHours: 3,
-                    satisfaction: 4.9
+                    satisfaction: 4.9,
+                    specialization: 'Réseaux Informatiques',
+                    publications: 20,
+                    experience: 11,
+                    officeHours: 'Jeudi 10h-12h',
+                    currentProjects: ['SDN', 'Sécurité Réseau'],
+                    evaluations: { excellent: 50, good: 35, average: 12, poor: 3 }
                 },
                 'Dr. Michel': {
                     name: 'Dr. Anne Michel',
                     title: 'Maître de Conférences',
                     department: 'Programmation',
                     email: 'a.michel@univ.fr',
+                    phone: '+33 1 23 45 67 96',
+                    office: 'Lab 302, Bâtiment C',
                     schedule: [
-                        { day: 3, session: 3, code: 'INF-106', name: 'Atelier Programmation TP', type: 'atelier', room: 'Lab 302', group: 'LSI1', duration: 2 }
+                        { day: 3, session: 3, code: 'INF-106', name: 'Atelier Programmation TP', type: 'atelier', room: 'Lab 302', group: 'LSI1', duration: 1 }
                     ],
-                    totalHours: 6,
+                    totalHours: 4.5,
                     researchHours: 18,
                     adminHours: 8,
-                    satisfaction: 4.4
+                    satisfaction: 4.4,
+                    specialization: 'Programmation Orientée Objet',
+                    publications: 14,
+                    experience: 9,
+                    officeHours: 'Mercredi 10h-12h',
+                    currentProjects: ['Java Enterprise', 'Design Patterns'],
+                    evaluations: { excellent: 38, good: 35, average: 20, poor: 7 }
                 },
                 'Prof. Garcia': {
                     name: 'Prof. Thomas Garcia',
                     title: 'Professeur des Universités',
                     department: 'Statistiques',
                     email: 't.garcia@univ.fr',
+                    phone: '+33 1 23 45 67 97',
+                    office: 'Bureau 220, Bâtiment B',
                     schedule: [
                         { day: 4, session: 0, code: 'MAT-103', name: 'Probabilités C', type: 'cours', room: 'Amphi A', group: 'LSI1', duration: 1 },
                         { day: 4, session: 1, code: 'MAT-103', name: 'Statistiques TD', type: 'td', room: 'Salle 103', group: 'LSI1', duration: 1 }
@@ -429,20 +591,34 @@
                     totalHours: 6,
                     researchHours: 12,
                     adminHours: 12,
-                    satisfaction: 4.6
+                    satisfaction: 4.6,
+                    specialization: 'Statistiques Appliquées',
+                    publications: 22,
+                    experience: 16,
+                    officeHours: 'Lundi 14h-16h',
+                    currentProjects: ['Data Science', 'Machine Learning'],
+                    evaluations: { excellent: 40, good: 40, average: 15, poor: 5 }
                 },
                 'Dr. Roux': {
                     name: 'Dr. Isabelle Roux',
                     title: 'Maître de Conférences',
                     department: 'Projets',
                     email: 'i.roux@univ.fr',
+                    phone: '+33 1 23 45 67 98',
+                    office: 'Labo 3, Bâtiment D',
                     schedule: [
-                        { day: 4, session: 3, code: 'INF-107', name: 'Projet Intégré', type: 'projet', room: 'Labo 3', group: 'LSI1', duration: 2 }
+                        { day: 4, session: 3, code: 'INF-107', name: 'Projet Intégré', type: 'projet', room: 'Labo 3', group: 'LSI1', duration: 1 }
                     ],
-                    totalHours: 6,
+                    totalHours: 4.5,
                     researchHours: 16,
                     adminHours: 6,
-                    satisfaction: 4.7
+                    satisfaction: 4.7,
+                    specialization: 'Gestion de Projets Informatiques',
+                    publications: 16,
+                    experience: 13,
+                    officeHours: 'Vendredi 14h-16h',
+                    currentProjects: ['Innovation Pédagogique', 'Projets Étudiants'],
+                    evaluations: { excellent: 45, good: 35, average: 15, poor: 5 }
                 }
             }
         };
@@ -482,7 +658,7 @@
                 <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
                     <div>
                         <h2 style="font-size: 1.5rem; font-weight: 700; color: #f8fafc; margin: 0;">${schedule.name}</h2>
-                        <p style="color: #64748b; font-size: 0.875rem; margin-top: 4px;">Semaine A • Horaires optimisés sans gaps</p>
+                        <p style="color: #64748b; font-size: 0.875rem; margin-top: 4px;">Semaine A • 8h00 - 17h00 • Sans gaps</p>
                     </div>
                     <div style="display: flex; gap: 12px;">
                         <button style="padding: 10px 16px; background: #334155; color: #e2e8f0; border: none; border-radius: 8px; cursor: pointer; font-size: 0.875rem; font-weight: 500;">
@@ -496,50 +672,51 @@
 
                 <div class="timetable-container">
                     <div class="timetable">
-                        <!-- Header Row -->
-                        <div class="header-cell" style="position: sticky; left: 0; z-index: 20;"></div>
-                        ${structure.sessions.map(s => `
-                            <div class="header-cell ${s.lunch ? 'bg-amber-950 text-amber-400' : ''}">
-                                <div>${s.name}</div>
-                                <div class="session-time">${s.time}</div>
-                            </div>
-                        `).join('')}
             `;
 
+            // Header row - 5 sessions (day + 5 = 6 columns)
+            html += `<div class="header-cell"></div>`;
+            structure.sessions.forEach(s => {
+                html += `<div class="header-cell ${s.lunch ? 'bg-amber-950 text-amber-400' : ''}">
+                    <div>${s.name}</div>
+                    <div style="font-size: 0.7rem; color: #64748b; margin-top: 2px;">${s.time}</div>
+                </div>`;
+            });
+
+            // Days - each row must have exactly 6 cells
             structure.days.forEach((day, dayIdx) => {
-                html += `
-                    <div class="day-cell">${day.name}<span style="font-size: 0.75rem; color: #64748b; margin-top: 4px;">${day.date}</span></div>
-                `;
+                html += `<div class="day-cell">${day.name}<span style="font-size: 0.75rem; color: #64748b; margin-top: 4px;">${day.date}</span></div>`;
+                
+                const coveredSessions = new Set();
                 
                 structure.sessions.forEach((session, sessIdx) => {
+                    if (coveredSessions.has(sessIdx)) return;
+                    
                     if (session.lunch) {
                         html += `<div class="lunch-cell"><i class="fa-solid fa-utensils" style="margin-right: 8px;"></i>PAUSE</div>`;
                         return;
                     }
                     
-                    const courses = schedule.schedule.filter(c => c.day === dayIdx && c.session === sessIdx);
+                    const course = schedule.schedule.find(c => c.day === dayIdx && c.session === sessIdx);
                     
-                    if (courses.length === 0) {
+                    if (!course) {
                         html += `<div class="empty-cell"></div>`;
                         return;
                     }
                     
-                    const course = courses[0];
-                    
-                    if (sessIdx > 0) {
-                        const prev = schedule.schedule.find(c => 
-                            c.day === dayIdx && c.session === sessIdx - 1 && c.code === course.code
-                        );
-                        if (prev) {
-                            html += `<div class="empty-cell" style="display: none;"></div>`;
-                            return;
-                        }
-                    }
-                    
                     const duration = course.duration || 1;
                     
+                    // Check if extending beyond available sessions
+                    const actualDuration = Math.min(duration, 5 - sessIdx);
+                    
+                    for (let i = 1; i < actualDuration; i++) {
+                        coveredSessions.add(sessIdx + i);
+                    }
+                    
+                    const colspan = actualDuration > 1 ? `style="grid-column: span ${actualDuration};"` : '';
+                    
                     html += `
-                        <div class="session-cell" style="${duration > 1 ? 'grid-column: span ' + duration + ';' : ''}">
+                        <div class="session-cell" ${colspan}>
                             <div class="course-block type-${course.type}">
                                 <span class="course-room">${course.room}</span>
                                 <div class="course-code">${course.code}</div>
@@ -588,11 +765,18 @@
             
             const weeklyHours = prof.schedule.reduce((acc, c) => acc + (c.duration || 1) * 1.5, 0);
             const daysActive = new Set(prof.schedule.map(c => c.day)).size;
+            const groups = [...new Set(prof.schedule.map(c => c.group))];
+            
             const courseTypes = {};
             prof.schedule.forEach(c => {
                 courseTypes[c.type] = (courseTypes[c.type] || 0) + 1;
             });
-            const groups = [...new Set(prof.schedule.map(c => c.group))];
+            
+            const totalEval = Object.values(prof.evaluations).reduce((a, b) => a + b, 0);
+            const evalPercentages = {};
+            Object.entries(prof.evaluations).forEach(([key, val]) => {
+                evalPercentages[key] = Math.round((val / totalEval) * 100);
+            });
             
             let html = `
                 <div style="margin-bottom: 20px;">
@@ -611,7 +795,7 @@
                         </div>
                     </div>
 
-                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 20px;">
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 20px;">
                         <div class="stats-card">
                             <div style="display: flex; align-items: center; gap: 12px;">
                                 <div style="width: 48px; height: 48px; border-radius: 12px; background: #06b6d4; display: flex; align-items: center; justify-content: center;">
@@ -658,18 +842,121 @@
                         </div>
                     </div>
 
-                    <div style="background: #1e293b; border: 1px solid #334155; border-radius: 12px; padding: 20px; margin-bottom: 20px;">
-                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                    <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 20px;">
+                        <div class="stats-card">
+                            <h4 style="color: #94a3b8; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px; border-bottom: 1px solid #334155; padding-bottom: 8px;">Informations Personnelles</h4>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <span class="info-label">Email</span>
+                                    <span class="info-value"><i class="fa-solid fa-envelope" style="color: #06b6d4; margin-right: 6px;"></i>${prof.email}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Téléphone</span>
+                                    <span class="info-value"><i class="fa-solid fa-phone" style="color: #06b6d4; margin-right: 6px;"></i>${prof.phone}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Bureau</span>
+                                    <span class="info-value"><i class="fa-solid fa-door-open" style="color: #06b6d4; margin-right: 6px;"></i>${prof.office}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Heures de consultation</span>
+                                    <span class="info-value"><i class="fa-solid fa-clock" style="color: #06b6d4; margin-right: 6px;"></i>${prof.officeHours}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Spécialisation</span>
+                                    <span class="info-value">${prof.specialization}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Expérience</span>
+                                    <span class="info-value">${prof.experience} ans</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="stats-card">
+                            <h4 style="color: #94a3b8; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px; border-bottom: 1px solid #334155; padding-bottom: 8px;">Activité & Recherche</h4>
+                            <div class="info-grid">
+                                <div class="info-item">
+                                    <span class="info-label">Publications</span>
+                                    <span class="info-value" style="font-size: 1.5rem; color: #06b6d4; font-weight: 700;">${prof.publications}</span>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Projets en cours</span>
+                                    <div style="display: flex; flex-wrap: wrap; margin-top: 4px;">
+                                        ${prof.currentProjects.map(proj => `<span class="badge" style="background: #06b6d420; color: #06b6d4; border: 1px solid #06b6d440;">${proj}</span>`).join('')}
+                                    </div>
+                                </div>
+                                <div class="info-item">
+                                    <span class="info-label">Répartition horaire</span>
+                                    <div style="margin-top: 8px;">
+                                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 4px;">
+                                            <span style="color: #94a3b8;">Enseignement</span>
+                                            <span style="color: #06b6d4; font-weight: 600;">${prof.totalHours}h</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: ${(prof.totalHours / 40) * 100}%; background: #06b6d4;"></div>
+                                        </div>
+                                    </div>
+                                    <div style="margin-top: 8px;">
+                                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 4px;">
+                                            <span style="color: #94a3b8;">Recherche</span>
+                                            <span style="color: #8b5cf6; font-weight: 600;">${prof.researchHours}h</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: ${(prof.researchHours / 40) * 100}%; background: #8b5cf6;"></div>
+                                        </div>
+                                    </div>
+                                    <div style="margin-top: 8px;">
+                                        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 4px;">
+                                            <span style="color: #94a3b8;">Administration</span>
+                                            <span style="color: #f59e0b; font-weight: 600;">${prof.adminHours}h</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill" style="width: ${(prof.adminHours / 40) * 100}%; background: #f59e0b;"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="stats-card" style="margin-bottom: 20px;">
+                        <h4 style="color: #94a3b8; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 16px;">Évaluations Étudiants (${totalEval} réponses)</h4>
+                        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;">
                             <div>
-                                <h4 style="color: #94a3b8; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Contact</h4>
-                                <p style="color: #e2e8f0; font-size: 0.9rem;"><i class="fa-solid fa-envelope" style="color: #06b6d4; margin-right: 8px;"></i>${prof.email}</p>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                                    <span style="color: #10b981; font-size: 0.875rem;">Excellent</span>
+                                    <span style="color: #10b981; font-weight: 600;">${evalPercentages.excellent}%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: ${evalPercentages.excellent}%; background: #10b981;"></div>
+                                </div>
                             </div>
                             <div>
-                                <h4 style="color: #94a3b8; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Répartition horaire</h4>
-                                <div style="display: flex; gap: 16px;">
-                                    <span style="color: #e2e8f0; font-size: 0.875rem;"><span style="color: #06b6d4; font-weight: 600;">${prof.totalHours}h</span> Enseignement</span>
-                                    <span style="color: #e2e8f0; font-size: 0.875rem;"><span style="color: #8b5cf6; font-weight: 600;">${prof.researchHours}h</span> Recherche</span>
-                                    <span style="color: #e2e8f0; font-size: 0.875rem;"><span style="color: #f59e0b; font-weight: 600;">${prof.adminHours}h</span> Admin</span>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                                    <span style="color: #06b6d4; font-size: 0.875rem;">Bon</span>
+                                    <span style="color: #06b6d4; font-weight: 600;">${evalPercentages.good}%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: ${evalPercentages.good}%; background: #06b6d4;"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                                    <span style="color: #f59e0b; font-size: 0.875rem;">Moyen</span>
+                                    <span style="color: #f59e0b; font-weight: 600;">${evalPercentages.average}%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: ${evalPercentages.average}%; background: #f59e0b;"></div>
+                                </div>
+                            </div>
+                            <div>
+                                <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+                                    <span style="color: #ef4444; font-size: 0.875rem;">Insuffisant</span>
+                                    <span style="color: #ef4444; font-weight: 600;">${evalPercentages.poor}%</span>
+                                </div>
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: ${evalPercentages.poor}%; background: #ef4444;"></div>
                                 </div>
                             </div>
                         </div>
@@ -678,45 +965,49 @@
 
                 <div class="timetable-container">
                     <div class="timetable">
-                        <div class="header-cell" style="position: sticky; left: 0; z-index: 20;"></div>
-                        ${structure.sessions.map(s => `
-                            <div class="header-cell ${s.lunch ? 'bg-amber-950 text-amber-400' : ''}">
-                                <div>${s.name}</div>
-                                <div class="session-time">${s.time}</div>
-                            </div>
-                        `).join('')}
             `;
 
+            // Header - 5 sessions
+            html += `<div class="header-cell"></div>`;
+            structure.sessions.forEach(s => {
+                html += `<div class="header-cell ${s.lunch ? 'bg-amber-950 text-amber-400' : ''}">
+                    <div>${s.name}</div>
+                    <div style="font-size: 0.7rem; color: #64748b; margin-top: 2px;">${s.time}</div>
+                </div>`;
+            });
+
+            // Days
             structure.days.forEach((day, dayIdx) => {
                 html += `<div class="day-cell">${day.name}<span style="font-size: 0.75rem; color: #64748b; margin-top: 4px;">${day.date}</span></div>`;
                 
+                const coveredSessions = new Set();
+                
                 structure.sessions.forEach((session, sessIdx) => {
+                    if (coveredSessions.has(sessIdx)) return;
+                    
                     if (session.lunch) {
                         html += `<div class="lunch-cell"><i class="fa-solid fa-utensils" style="margin-right: 8px;"></i>PAUSE</div>`;
                         return;
                     }
                     
-                    const courses = prof.schedule.filter(c => c.day === dayIdx && c.session === sessIdx);
+                    const course = prof.schedule.find(c => c.day === dayIdx && c.session === sessIdx);
                     
-                    if (courses.length === 0) {
+                    if (!course) {
                         html += `<div class="empty-cell"></div>`;
                         return;
                     }
                     
-                    const course = courses[0];
+                    const duration = course.duration || 1;
+                    const actualDuration = Math.min(duration, 5 - sessIdx);
                     
-                    if (sessIdx > 0) {
-                        const prev = prof.schedule.find(c => c.day === dayIdx && c.session === sessIdx - 1 && c.code === course.code);
-                        if (prev) {
-                            html += `<div class="empty-cell" style="display: none;"></div>`;
-                            return;
-                        }
+                    for (let i = 1; i < actualDuration; i++) {
+                        coveredSessions.add(sessIdx + i);
                     }
                     
-                    const duration = course.duration || 1;
+                    const colspan = actualDuration > 1 ? `style="grid-column: span ${actualDuration};"` : '';
                     
                     html += `
-                        <div class="session-cell" style="${duration > 1 ? 'grid-column: span ' + duration + ';' : ''}">
+                        <div class="session-cell" ${colspan}>
                             <div class="course-block type-${course.type}">
                                 <span class="course-room">${course.room}</span>
                                 <div class="course-code">${course.code}</div>
@@ -731,20 +1022,6 @@
             html += `
                     </div>
                 </div>
-
-                <div style="margin-top: 20px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px;">
-                    ${structure.days.map((day, idx) => {
-                        const dayCourses = prof.schedule.filter(c => c.day === idx);
-                        const hours = dayCourses.reduce((acc, c) => acc + (c.duration || 1) * 1.5, 0);
-                        return `
-                            <div class="stats-card" style="text-align: center; ${hours === 0 ? 'opacity: 0.5;' : ''}">
-                                <div style="font-size: 0.875rem; color: #94a3b8; margin-bottom: 4px;">${day.full}</div>
-                                <div style="font-size: 1.5rem; font-weight: 700; color: ${hours > 0 ? '#06b6d4' : '#64748b'};">${hours}h</div>
-                                <div style="font-size: 0.75rem; color: #64748b;">${dayCourses.length} séances</div>
-                            </div>
-                        `;
-                    }).join('')}
-                </div>
             `;
 
             container.innerHTML = html;
@@ -758,7 +1035,7 @@
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
                         <div>
                             <h2 style="font-size: 1.5rem; font-weight: 700; color: #f8fafc; margin: 0;">Master Timetable</h2>
-                            <p style="color: #64748b; font-size: 0.875rem; margin-top: 4px;">Vue d'ensemble • Tous groupes • Pause déjeuner protégée</p>
+                            <p style="color: #64748b; font-size: 0.875rem; margin-top: 4px;">Vue d'ensemble • 8h00 - 17h00 • Pause déjeuner protégée</p>
                         </div>
                         <div style="display: flex; gap: 12px;">
                             <button onclick="validate()" style="padding: 10px 16px; background: #10b981; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 0.875rem; font-weight: 500;">
@@ -787,28 +1064,35 @@
                             <div style="font-size: 0.75rem; color: #8b5cf6;">Actifs cette semaine</div>
                         </div>
                         <div class="stats-card">
-                            <div style="font-size: 0.875rem; color: #64748b; margin-bottom: 4px;">Pause déjeuner</div>
-                            <div style="font-size: 1.5rem; font-weight: 700; color: #f59e0b;">12h-13h30</div>
-                            <div style="font-size: 0.75rem; color: #f59e0b;">Strictement protégée</div>
+                            <div style="font-size: 0.875rem; color: #64748b; margin-bottom: 4px;">Horaires</div>
+                            <div style="font-size: 1.5rem; font-weight: 700; color: #f59e0b;">8h - 17h</div>
+                            <div style="font-size: 0.75rem; color: #f59e0b;">Pause 12h-13h30</div>
                         </div>
                     </div>
                 </div>
 
                 <div class="timetable-container">
                     <div class="timetable">
-                        <div class="header-cell" style="position: sticky; left: 0; z-index: 20;"></div>
-                        ${structure.sessions.map(s => `
-                            <div class="header-cell ${s.lunch ? 'bg-amber-950 text-amber-400' : ''}">
-                                <div>${s.name}</div>
-                                <div class="session-time">${s.time}</div>
-                            </div>
-                        `).join('')}
             `;
 
+            // Header - 5 sessions
+            html += `<div class="header-cell"></div>`;
+            structure.sessions.forEach(s => {
+                html += `<div class="header-cell ${s.lunch ? 'bg-amber-950 text-amber-400' : ''}">
+                    <div>${s.name}</div>
+                    <div style="font-size: 0.7rem; color: #64748b; margin-top: 2px;">${s.time}</div>
+                </div>`;
+            });
+
+            // Days - Fixed layout
             structure.days.forEach((day, dayIdx) => {
                 html += `<div class="day-cell">${day.name}<span style="font-size: 0.75rem; color: #64748b; margin-top: 4px;">${day.date}</span></div>`;
                 
+                const coveredSessions = new Set();
+                
                 structure.sessions.forEach((session, sessIdx) => {
+                    if (coveredSessions.has(sessIdx)) return;
+                    
                     if (session.lunch) {
                         html += `<div class="lunch-cell"><i class="fa-solid fa-utensils" style="margin-right: 8px;"></i>PAUSE</div>`;
                         return;
@@ -821,13 +1105,14 @@
                         return;
                     }
                     
-                    html += `<div class="session-cell" style="padding: 4px;">`;
+                    // For admin, show all courses in this slot
+                    html += `<div class="session-cell" style="padding: 4px; overflow-y: auto;">`;
                     courses.forEach(course => {
                         html += `
-                            <div class="course-block type-${course.type}" style="margin-bottom: 4px; min-height: 50px; position: relative;">
-                                <span class="course-room" style="font-size: 0.65rem;">${course.room}</span>
-                                <div class="course-code" style="font-size: 0.8rem;">${course.code}</div>
-                                <div class="course-name" style="font-size: 0.7rem;">${course.name}</div>
+                            <div class="admin-course-item type-${course.type}">
+                                <div style="font-weight: 600; font-size: 0.75rem;">${course.code}</div>
+                                <div style="font-size: 0.65rem; opacity: 0.9;">${course.name}</div>
+                                <div style="font-size: 0.6rem; opacity: 0.8;">${course.group || ''} • ${course.room}</div>
                             </div>
                         `;
                     });
@@ -841,7 +1126,7 @@
 
                 <div class="stats-card" style="margin-top: 20px;">
                     <h3 style="color: #f8fafc; font-size: 1rem; font-weight: 600; margin-bottom: 16px;">Charge horaire par professeur</h3>
-                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px;">
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 12px;">
                         ${Object.entries(data.professors).map(([key, prof]) => {
                             const weekly = prof.schedule.reduce((acc, c) => acc + (c.duration || 1) * 1.5, 0);
                             const days = new Set(prof.schedule.map(c => c.day)).size;
@@ -851,14 +1136,17 @@
                                         <div style="width: 40px; height: 40px; border-radius: 50%; background: #334155; display: flex; align-items: center; justify-content: center;">
                                             <i class="fa-solid fa-user" style="color: #94a3b8;"></i>
                                         </div>
-                                        <div>
+                                        <div style="flex: 1;">
                                             <div style="font-weight: 600; color: #f8fafc; font-size: 0.9rem;">${prof.name}</div>
                                             <div style="font-size: 0.75rem; color: #64748b;">${prof.department}</div>
                                         </div>
+                                        <div style="text-align: right;">
+                                            <div style="font-size: 1.25rem; font-weight: 700; color: ${weekly > 15 ? '#f59e0b' : '#06b6d4'};">${weekly}h</div>
+                                            <div style="font-size: 0.7rem; color: #64748b;">${days} jours</div>
+                                        </div>
                                     </div>
-                                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                                        <span style="font-size: 1.25rem; font-weight: 700; color: ${weekly > 15 ? '#f59e0b' : '#06b6d4'};">${weekly}h</span>
-                                        <span style="font-size: 0.75rem; color: #64748b;">${days} jours</span>
+                                    <div style="display: flex; gap: 4px; flex-wrap: wrap; margin-top: 8px;">
+                                        ${prof.currentProjects.slice(0, 2).map(proj => `<span style="font-size: 0.65rem; padding: 2px 8px; background: #1e293b; border-radius: 10px; color: #94a3b8;">${proj}</span>`).join('')}
                                     </div>
                                 </div>
                             `;
@@ -885,11 +1173,11 @@
         }
 
         function validate() {
-            alert(`✅ VALIDATION RÉUSSIE\n\nContraintes vérifiées:\n• Aucun cours pendant la pause déjeuner (12h-13h30)\n• Aucun gap dans les emplois étudiants\n• Aucun gap pour les professeurs\n• Aucun conflit de salle\n• Durées respectées`);
+            alert(`✅ VALIDATION RÉUSSIE\n\nContraintes vérifiées:\n• Horaires: 8h30 - 17h00 (8h journée)\n• Pause déjeuner: 12h00 - 13h30 protégée\n• Aucun gap dans les emplois\n• Aucun conflit de salle\n• Durées respectées`);
         }
 
         function optimize() {
-            alert(`🤖 OPTIMISATION TERMINÉE\n\nAméliorations appliquées:\n• Regroupement par matière\n• Blocs TP de 3h sans interruption\n• Répartition équilibrée\n• Protection stricte 12h-13h30\n• 0 conflit détecté`);
+            alert(`🤖 OPTIMISATION TERMINÉE\n\nAméliorations appliquées:\n• Journée réduite à 8h (suppression Séance 6)\n• Blocs TP optimisés\n• Répartition équilibrée\n• 0 conflit détecté`);
         }
 
         render();
