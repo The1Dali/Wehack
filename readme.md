@@ -1,88 +1,90 @@
-# Unitopia Scheduler 🎓
+# EduFlow
 
 > AI-powered intelligent timetable generation system that transforms university scheduling from chaos to clarity
 
-## 📊 The Problem
+## The Problem
 
 **86% of college students struggle with time management. 54% experience increased stress because of it.**
 
 But here's what nobody talks about: it's not entirely their fault. The system is broken from day one.
 
 Current university scheduling creates:
-- 📉 Wasted time: Students lose 10+ hours per week in unproductive schedule gaps
-- 😰 Unnecessary stress: 54% of students stressed due to poor time management
-- 🔄 Administrative burden: 40+ hours of manual scheduling work per semester
-- 😤 Faculty frustration: Weeks of back-and-forth emails about availability
+- Wasted time: Students lose 10+ hours per week in unproductive schedule gaps
+- Unnecessary stress: 54% of students stressed due to poor time management
+- Administrative burden: 40+ hours of manual scheduling work per semester
+- Faculty frustration: Weeks of back-and-forth emails about availability
 
-**Unitopia Scheduler solves this with intelligent, AI-powered timetable generation.**
+**EduFlow solves this with intelligent, AI-powered timetable generation.**
 
 ---
 
-## 🚀 The Solution
+## The Solution
 
-An agentic AI system that generates optimized schedules by considering:
-- ✅ Professor availability and preferences
-- ✅ Student scheduling preferences
-- ✅ Room availability and capacity constraints
-- ✅ Course prerequisites and requirements
-- ✅ Department guidelines and policies
+An agentic AI system built with LangGraph that generates optimized schedules by considering:
+- Professor availability and preferences
+- Student scheduling preferences
+- Room availability and capacity constraints
+- Course prerequisites and requirements
+- Department guidelines and policies
 
 ### Key Features
 
 **For Students:**
-- 📅 Optimized schedules with minimal gaps (average 45min vs. 3 hours)
-- 🎯 Personalized to your preferences (no 8am classes, consolidated days, etc.)
-- 🔍 Transparent explanations for why you got each time slot
-- 🔄 Easy section swap requests
+- Optimized schedules with minimal gaps (average 45min vs. 3 hours)
+- Personalized to your preferences (no 8am classes, consolidated days, etc.)
+- Transparent explanations for why you got each time slot
+- Easy section swap requests
 
 **For Professors:**
-- ⚡ 2-minute availability input (vs. weeks of emails)
-- 🗓️ Schedules that respect research and personal time
-- 💬 Natural language input: "I need Wednesths free for research"
-- 📊 Visibility into scheduling decisions
+- 2-minute availability input (vs. weeks of emails)
+- Schedules that respect research and personal time
+- Natural language input: "I need Wednesdays free for research"
+- Visibility into scheduling decisions
 
 **For Administrators:**
-- ⏱️ 90% reduction in scheduling time (40 hours → 4 hours)
-- 🎯 Smart conflict detection and resolution suggestions
-- 📈 Data-driven insights on course demand and trends
-- ✅ One-click schedule approval with instant impact analysis
+- 90% reduction in scheduling time (40 hours to 4 hours)
+- Smart conflict detection and resolution suggestions
+- Data-driven insights on course demand and trends
+- One-click schedule approval with instant impact analysis
 
 ---
 
-## 🏗️ Tech Stack
+## Tech Stack
 
 ### Frontend
 - **Framework:** Flutter
-- **State Management:** Provider / Riverpod
+- **State Management:** Riverpod
 - **UI Components:** Material Design 3
 - **Platforms:** Web, iOS, Android, Desktop
 
 ### Backend
 - **Database:** PostgreSQL
-- **API:** RESTful API (Node.js/Express or FastAPI)
+- **API:** RESTful API (FastAPI/Python)
 - **Authentication:** JWT-based auth
-- **File Storage:** PostgreSQL BYTEA or cloud storage
+- **ORM:** SQLAlchemy
 
-### AI/ML
-- **LLM Provider:** Google Gemini API
-- **Agent Framework:** LangChain / Custom agentic system
-- **Optimization:** Constraint satisfaction algorithms + LLM reasoning
+### AI Agent
+- **Framework:** LangGraph
+- **LLM Provider:** Google Gemini (via LangChain)
+- **Agent Type:** Multi-agent system with planning and execution
+- **Tools:** Custom constraint satisfaction tools
+- **Memory:** PostgreSQL-backed conversation history
 
 ### DevOps
-- **Containerization:** Docker
+- **Containerization:** Docker & Docker Compose
 - **CI/CD:** GitHub Actions
 - **Hosting:** TBD (Railway, Render, or cloud provider)
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 ```
 unitopia-scheduler/
 ├── frontend/                 # Flutter application
 │   ├── lib/
 │   │   ├── models/          # Data models
 │   │   ├── services/        # API services
-│   │   ├── providers/       # State management
+│   │   ├── providers/       # State management (Riverpod)
 │   │   ├── screens/         # UI screens
 │   │   │   ├── student/     # Student dashboard & views
 │   │   │   ├── professor/   # Professor availability input
@@ -92,24 +94,34 @@ unitopia-scheduler/
 │   ├── assets/              # Images, fonts, etc.
 │   └── pubspec.yaml
 │
-├── backend/                 # API server
-│   ├── src/
-│   │   ├── routes/          # API endpoints
-│   │   ├── controllers/     # Request handlers
-│   │   ├── models/          # Database models
+├── backend/                 # FastAPI server
+│   ├── app/
+│   │   ├── api/             # API endpoints
+│   │   │   └── routes/      # Route handlers
+│   │   ├── models/          # SQLAlchemy models
+│   │   ├── schemas/         # Pydantic schemas
 │   │   ├── services/        # Business logic
-│   │   │   ├── gemini/      # Gemini API integration
-│   │   │   ├── scheduler/   # Scheduling algorithms
-│   │   │   └── optimizer/   # Constraint optimization
-│   │   ├── middleware/      # Auth, validation, etc.
-│   │   └── utils/           # Helper functions
-│   ├── migrations/          # Database migrations
-│   └── package.json
+│   │   ├── core/            # Config, security
+│   │   └── db/              # Database connection
+│   ├── alembic/             # Database migrations
+│   ├── requirements.txt
+│   └── main.py
 │
-├── ai-agent/                # AI scheduling agent
-│   ├── agents/              # LangChain agents
+├── ai-agent/                # LangGraph scheduling agent
+│   ├── agents/
+│   │   ├── scheduler_graph.py      # Main LangGraph workflow
+│   │   ├── planner_agent.py        # Planning agent
+│   │   ├── optimizer_agent.py      # Optimization agent
+│   │   ├── validator_agent.py      # Validation agent
+│   │   └── explainer_agent.py      # Explanation agent
+│   ├── tools/
+│   │   ├── constraint_checker.py   # Check scheduling constraints
+│   │   ├── conflict_resolver.py    # Resolve scheduling conflicts
+│   │   ├── database_query.py       # Query PostgreSQL
+│   │   └── optimization.py         # Constraint satisfaction algorithms
 │   ├── prompts/             # LLM prompt templates
-│   ├── tools/               # Custom agent tools
+│   ├── state/               # LangGraph state definitions
+│   ├── checkpoints/         # Agent checkpoint storage
 │   └── requirements.txt
 │
 ├── database/
@@ -119,6 +131,7 @@ unitopia-scheduler/
 ├── docs/
 │   ├── API.md               # API documentation
 │   ├── ARCHITECTURE.md      # System architecture
+│   ├── LANGGRAPH.md         # LangGraph agent design
 │   └── DEPLOYMENT.md        # Deployment guide
 │
 ├── docker-compose.yml
@@ -128,7 +141,204 @@ unitopia-scheduler/
 
 ---
 
-## 🗄️ Database Schema
+## LangGraph Agent Architecture
+
+### Multi-Agent System Design
+
+The scheduling system uses LangGraph to orchestrate multiple specialized agents:
+
+**1. Planner Agent**
+- Analyzes incoming scheduling request
+- Breaks down into sub-tasks
+- Identifies constraints and priorities
+- Creates execution plan
+
+**2. Optimizer Agent**
+- Executes constraint satisfaction algorithms
+- Balances competing preferences
+- Generates candidate schedules
+- Scores solutions based on optimization criteria
+
+**3. Validator Agent**
+- Checks for hard constraint violations
+- Identifies soft constraint trade-offs
+- Flags conflicts for review
+- Ensures regulatory compliance
+
+**4. Explainer Agent**
+- Generates human-readable explanations
+- Answers "why" questions about scheduling decisions
+- Provides transparency into AI reasoning
+- Creates admin review summaries
+
+### LangGraph Workflow
+```python
+# Simplified graph structure
+from langgraph.graph import StateGraph, END
+
+workflow = StateGraph(SchedulingState)
+
+# Add nodes
+workflow.add_node("planner", planner_agent)
+workflow.add_node("optimizer", optimizer_agent)
+workflow.add_node("validator", validator_agent)
+workflow.add_node("explainer", explainer_agent)
+
+# Define edges
+workflow.add_edge("planner", "optimizer")
+workflow.add_conditional_edges(
+    "optimizer",
+    should_validate,
+    {
+        "validate": "validator",
+        "regenerate": "optimizer",
+    }
+)
+workflow.add_edge("validator", "explainer")
+workflow.add_edge("explainer", END)
+
+# Set entry point
+workflow.set_entry_point("planner")
+
+# Compile
+app = workflow.compile(checkpointer=checkpointer)
+```
+
+### Agent State Management
+```python
+from typing import TypedDict, List, Dict, Annotated
+from langgraph.graph import add_messages
+
+class SchedulingState(TypedDict):
+    messages: Annotated[List, add_messages]
+    semester_id: str
+    constraints: Dict
+    professor_availability: List[Dict]
+    student_preferences: List[Dict]
+    room_data: List[Dict]
+    candidate_schedules: List[Dict]
+    conflicts: List[Dict]
+    selected_schedule: Dict
+    explanations: Dict
+    validation_status: str
+```
+
+### Custom Tools
+
+**Constraint Checker Tool**
+```python
+from langchain.tools import tool
+
+@tool
+def check_constraints(schedule: dict, constraints: dict) -> dict:
+    """
+    Validates a proposed schedule against hard and soft constraints.
+    Returns violations and severity levels.
+    """
+    violations = []
+    
+    # Check hard constraints
+    if has_double_booking(schedule):
+        violations.append({
+            "type": "hard",
+            "constraint": "no_double_booking",
+            "severity": "critical"
+        })
+    
+    # Check soft constraints
+    if has_excessive_gaps(schedule):
+        violations.append({
+            "type": "soft",
+            "constraint": "minimize_gaps",
+            "severity": "medium"
+        })
+    
+    return {"violations": violations, "valid": len([v for v in violations if v["type"] == "hard"]) == 0}
+```
+
+**Database Query Tool**
+```python
+@tool
+def query_professor_availability(professor_id: str, semester_id: str) -> dict:
+    """
+    Retrieves professor availability from PostgreSQL database.
+    """
+    query = """
+        SELECT day_of_week, start_time, end_time, preference_level
+        FROM professor_availability
+        WHERE professor_id = %s AND semester_id = %s
+    """
+    results = db.execute(query, (professor_id, semester_id))
+    return {"availability": results}
+```
+
+### Example Agent Interaction
+```python
+# Planner Agent receives request
+planner_prompt = """
+You are a scheduling planner. Analyze this request and create an execution plan.
+
+Request: Generate schedule for CS Department, Spring 2026
+Constraints:
+- 15 professors with varying availability
+- 45 courses (30 lectures, 15 labs)
+- Student preferences: 60% want no 8am classes
+- 3 specialized labs with limited equipment
+
+Create a step-by-step plan to generate an optimal schedule.
+"""
+
+# Optimizer Agent generates solutions
+optimizer_prompt = """
+You are a scheduling optimizer. Generate 3 candidate schedules that:
+1. Respect all professor availability (hard constraint)
+2. Minimize average student gap time (soft constraint)
+3. Avoid 8am classes where possible (soft constraint)
+4. Ensure lab equipment availability (hard constraint)
+
+Use the constraint_checker tool to validate each candidate.
+"""
+
+# Explainer Agent creates transparency
+explainer_prompt = """
+You are a scheduling explainer. For the selected schedule, explain:
+- Why Prof. Smith teaches at 9am MWF
+- Why CHEM 101 lab is Tuesday 2-5pm
+- What trade-offs were made
+- Which preferences were prioritized
+
+Make explanations clear for non-technical users.
+"""
+```
+
+### Memory and Checkpointing
+
+LangGraph uses PostgreSQL-backed checkpointing to:
+- Save agent state at each step
+- Enable resume after interruptions
+- Support human-in-the-loop approvals
+- Track decision history for auditing
+```python
+from langgraph.checkpoint.postgres import PostgresSaver
+
+# Configure checkpointer
+checkpointer = PostgresSaver(
+    connection_string=os.getenv("DATABASE_URL")
+)
+
+# Compile graph with checkpointing
+app = workflow.compile(checkpointer=checkpointer)
+
+# Invoke with thread_id for persistence
+result = app.invoke(
+    {"messages": [initial_message]},
+    config={"configurable": {"thread_id": "semester_spring2026"}}
+)
+```
+
+---
+
+## Database Schema
 
 ### Core Tables
 
@@ -142,14 +352,14 @@ unitopia-scheduler/
 
 **professors**
 - `id` (UUID, Primary Key)
-- `user_id` (UUID, Foreign Key → users)
-- `department_id` (UUID, Foreign Key → departments)
+- `user_id` (UUID, Foreign Key to users)
+- `department_id` (UUID, Foreign Key to departments)
 - `office_location` (VARCHAR)
 
 **professor_availability**
 - `id` (UUID, Primary Key)
-- `professor_id` (UUID, Foreign Key → professors)
-- `semester_id` (UUID, Foreign Key → semesters)
+- `professor_id` (UUID, Foreign Key to professors)
+- `semester_id` (UUID, Foreign Key to semesters)
 - `day_of_week` (INTEGER: 0-6)
 - `start_time`, `end_time` (TIME)
 - `preference_level` (ENUM: 'required', 'preferred', 'available')
@@ -164,17 +374,17 @@ unitopia-scheduler/
 
 **sections**
 - `id` (UUID, Primary Key)
-- `course_id` (UUID, Foreign Key → courses)
-- `professor_id` (UUID, Foreign Key → professors)
-- `semester_id` (UUID, Foreign Key → semesters)
+- `course_id` (UUID, Foreign Key to courses)
+- `professor_id` (UUID, Foreign Key to professors)
+- `semester_id` (UUID, Foreign Key to semesters)
 - `section_number` (VARCHAR: e.g., "01")
 - `capacity` (INTEGER)
 - `enrolled_count` (INTEGER)
 
 **schedule_slots**
 - `id` (UUID, Primary Key)
-- `section_id` (UUID, Foreign Key → sections)
-- `room_id` (UUID, Foreign Key → rooms)
+- `section_id` (UUID, Foreign Key to sections)
+- `room_id` (UUID, Foreign Key to rooms)
 - `day_of_week` (INTEGER)
 - `start_time`, `end_time` (TIME)
 - `generated_by_ai` (BOOLEAN)
@@ -182,126 +392,43 @@ unitopia-scheduler/
 
 **student_preferences**
 - `id` (UUID, Primary Key)
-- `student_id` (UUID, Foreign Key → students)
-- `semester_id` (UUID, Foreign Key → semesters)
+- `student_id` (UUID, Foreign Key to students)
+- `semester_id` (UUID, Foreign Key to semesters)
 - `no_early_classes` (BOOLEAN)
 - `early_class_threshold` (TIME)
 - `minimize_gaps` (BOOLEAN)
 - `consolidate_days` (BOOLEAN)
 - `preferred_days` (JSON)
 
-**ai_scheduling_logs**
+**langgraph_checkpoints**
 - `id` (UUID, Primary Key)
-- `semester_id` (UUID, Foreign Key)
-- `initiated_by` (UUID, Foreign Key → users)
-- `status` (ENUM: 'running', 'completed', 'failed')
-- `gemini_request_payload` (JSON)
-- `gemini_response` (JSON)
-- `constraints_processed` (INTEGER)
-- `conflicts_detected` (INTEGER)
+- `thread_id` (VARCHAR)
+- `checkpoint_id` (VARCHAR)
+- `state` (JSON)
+- `metadata` (JSON)
+- `created_at` (TIMESTAMP)
+
+**agent_execution_logs**
+- `id` (UUID, Primary Key)
+- `thread_id` (VARCHAR)
+- `agent_name` (VARCHAR)
+- `tool_calls` (JSON)
+- `input_state` (JSON)
+- `output_state` (JSON)
 - `execution_time_ms` (INTEGER)
 - `created_at` (TIMESTAMP)
 
 ---
 
-## 🤖 AI Agent Architecture
-
-### Gemini Integration
-
-The scheduling agent uses Google's Gemini API to:
-
-1. **Understand Natural Language Preferences**
-```
-   Professor input: "I need Wednesdays free for research"
-   → Gemini interprets: Block all Wednesday time slots
-```
-
-2. **Reason About Trade-offs**
-```
-   Constraint conflict detected:
-   - 60% of students want no 8am classes
-   - Only morning slots available for required course
-   
-   → Gemini analyzes: "Schedule at 9am instead of 8am, 
-      accommodates 85% of preferences while meeting requirement"
-```
-
-3. **Generate Explanations**
-```
-   Student asks: "Why is my Chemistry lab at 2pm on Tuesday?"
-   
-   → Gemini explains: "This lab time was selected because:
-      - You requested no Friday classes (high priority)
-      - Tuesday 2pm had the least scheduling conflicts
-      - 73% of your classmates prefer afternoon labs
-      - The specialized equipment is only available in this room"
-```
-
-### Agent Workflow
-```
-1. Data Collection
-   ↓
-2. Constraint Extraction (Gemini analyzes inputs)
-   ↓
-3. Schedule Generation (Optimization algorithm + Gemini reasoning)
-   ↓
-4. Conflict Resolution (Gemini suggests trade-offs)
-   ↓
-5. Explanation Generation (Gemini creates human-readable explanations)
-   ↓
-6. Admin Review & Approval
-```
-
-### API Call Pattern
-```dart
-// Example Flutter service calling backend
-class SchedulingService {
-  Future<Schedule> generateSchedule(String semesterId) async {
-    final response = await http.post(
-      Uri.parse('$baseUrl/api/schedules/generate'),
-      headers: {'Authorization': 'Bearer $token'},
-      body: jsonEncode({'semester_id': semesterId}),
-    );
-    
-    // Backend internally calls Gemini API
-    return Schedule.fromJson(jsonDecode(response.body));
-  }
-}
-```
-```javascript
-// Backend endpoint calling Gemini
-async function generateSchedule(semesterId) {
-  // 1. Fetch all constraints from PostgreSQL
-  const constraints = await fetchConstraints(semesterId);
-  
-  // 2. Call Gemini API
-  const geminiResponse = await callGeminiAPI({
-    prompt: buildSchedulingPrompt(constraints),
-    model: 'gemini-pro',
-    temperature: 0.7,
-  });
-  
-  // 3. Parse Gemini's output
-  const proposedSchedule = parseGeminiResponse(geminiResponse);
-  
-  // 4. Validate & store in PostgreSQL
-  const validatedSchedule = await validateSchedule(proposedSchedule);
-  
-  return validatedSchedule;
-}
-```
-
----
-
-## 🚦 Getting Started
+## Getting Started
 
 ### Prerequisites
 
 - **Flutter SDK** (>= 3.0.0)
-- **Node.js** (>= 18.x) or **Python** (>= 3.10)
+- **Python** (>= 3.11)
 - **PostgreSQL** (>= 14)
 - **Docker** (optional, recommended)
-- **Google Gemini API Key**
+- **Google Gemini API Key** (for LangGraph LLM)
 
 ### Installation
 
@@ -315,9 +442,9 @@ async function generateSchedule(semesterId) {
 ```bash
    cp .env.example .env
    # Edit .env and add your credentials:
-   # - DATABASE_URL
-   # - GEMINI_API_KEY
-   # - JWT_SECRET
+   # DATABASE_URL=postgresql://user:password@localhost:5432/unitopia
+   # GOOGLE_API_KEY=your_gemini_api_key
+   # JWT_SECRET=your_jwt_secret
 ```
 
 3. **Start the database**
@@ -325,25 +452,38 @@ async function generateSchedule(semesterId) {
    docker-compose up -d postgres
 ```
 
-4. **Run database migrations**
+4. **Set up Python virtual environment and install dependencies**
+```bash
+   # Backend
+   cd backend
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   pip install -r requirements.txt
+   
+   # AI Agent
+   cd ../ai-agent
+   pip install -r requirements.txt
+```
+
+5. **Run database migrations**
 ```bash
    cd backend
-   npm run migrate
-   # or: python manage.py migrate
+   alembic upgrade head
 ```
 
-5. **Seed sample data (optional)**
+6. **Seed sample data (optional)**
 ```bash
-   npm run seed
+   python scripts/seed_database.py
 ```
 
-6. **Start the backend**
+7. **Start the backend**
 ```bash
-   npm run dev
-   # Backend runs on http://localhost:3000
+   cd backend
+   uvicorn app.main:app --reload
+   # Backend runs on http://localhost:8000
 ```
 
-7. **Start the Flutter app**
+8. **Start the Flutter app**
 ```bash
    cd frontend
    flutter pub get
@@ -353,63 +493,173 @@ async function generateSchedule(semesterId) {
 
 ---
 
-## 📸 Screenshots
+## API Endpoints
 
-> *Coming soon - hackathon demo screenshots*
+### Authentication
+- `POST /api/auth/register` - Register new user
+- `POST /api/auth/login` - Login user
+- `POST /api/auth/refresh` - Refresh JWT token
 
-**Student Dashboard**
-- Weekly schedule view with color-coded classes
-- Gap time visualization
-- Explanation tooltips
+### Professor Endpoints
+- `POST /api/professors/availability` - Submit availability
+- `GET /api/professors/{id}/availability` - Get availability
+- `PUT /api/professors/availability/{id}` - Update availability
 
-**Professor Availability Input**
-- Simple time block selection interface
-- Natural language input option
-- Preference levels (required/preferred/available)
+### Scheduling Endpoints
+- `POST /api/schedules/generate` - Trigger AI schedule generation
+- `GET /api/schedules/{semester_id}` - Get generated schedule
+- `POST /api/schedules/{id}/approve` - Admin approve schedule
+- `GET /api/schedules/{id}/conflicts` - Get scheduling conflicts
+- `GET /api/schedules/{id}/explanations` - Get AI explanations
 
-**Admin Review Dashboard**
-- Generated schedule overview
-- Conflict flags with AI explanations
-- One-click approval/adjustment
+### Student Endpoints
+- `POST /api/students/preferences` - Submit scheduling preferences
+- `GET /api/students/{id}/schedule` - Get student schedule
+- `POST /api/students/swap-request` - Request section swap
+
+### Admin Endpoints
+- `GET /api/admin/dashboard` - Get admin dashboard data
+- `GET /api/admin/analytics` - Get scheduling analytics
+- `POST /api/admin/override` - Manual schedule override
 
 ---
 
-## 🗺️ Roadmap
+## Development Workflow
+
+### Running Tests
+```bash
+# Backend tests
+cd backend
+pytest
+
+# Agent tests
+cd ai-agent
+pytest tests/
+
+# Frontend tests
+cd frontend
+flutter test
+```
+
+### Running LangGraph Agent Locally
+```bash
+cd ai-agent
+python -m agents.scheduler_graph --semester-id "spring2026"
+```
+
+### LangSmith Tracing (Optional)
+
+Enable LangSmith for agent debugging:
+```bash
+export LANGCHAIN_TRACING_V2=true
+export LANGCHAIN_API_KEY=your_langsmith_api_key
+export LANGCHAIN_PROJECT=unitopia-scheduler
+```
+
+---
+
+## Deployment
+
+### Docker Deployment
+```bash
+# Build all services
+docker-compose build
+
+# Start all services
+docker-compose up -d
+
+# View logs
+docker-compose logs -f
+```
+
+### Environment Variables
+
+**Required:**
+- `DATABASE_URL` - PostgreSQL connection string
+- `GOOGLE_API_KEY` - Gemini API key for LangGraph
+- `JWT_SECRET` - Secret for JWT token generation
+
+**Optional:**
+- `LANGCHAIN_TRACING_V2` - Enable LangSmith tracing
+- `LANGCHAIN_API_KEY` - LangSmith API key
+- `REDIS_URL` - Redis for caching (future)
+
+---
+
+## Roadmap
 
 ### Phase 1: Core Scheduling (Hackathon MVP)
-- ✅ Professor availability input
-- ✅ Basic AI schedule generation
-- ✅ Student schedule viewing
-- ✅ Admin review dashboard
-- ✅ Gemini API integration
+- Professor availability input interface
+- LangGraph multi-agent scheduling system
+- Student schedule viewing dashboard
+- Admin review and approval interface
+- Basic constraint satisfaction
 
 ### Phase 2: Advanced Optimization
-- [ ] Multi-objective optimization (gaps, walking distance, preferences)
-- [ ] Room allocation integration
-- [ ] Section swap marketplace
-- [ ] Real-time conflict detection
+- Multi-objective optimization (gaps, walking distance, preferences)
+- Room allocation integration
+- Section swap marketplace
+- Real-time conflict detection
+- Enhanced LangGraph tools
 
 ### Phase 3: Exam Scheduling
-- [ ] Exam timetable generation
-- [ ] No student has 3+ exams in one day
-- [ ] Proper spacing between exams
-- [ ] Integration with class schedule
+- Exam timetable generation agent
+- No student has 3+ exams in one day constraint
+- Proper spacing between exams
+- Integration with class schedule
 
 ### Phase 4: Campus Ecosystem
-- [ ] Campus events calendar integration
-- [ ] Study time blocking recommendations
-- [ ] Club meeting scheduler
-- [ ] Unified student timeline view
+- Campus events calendar integration
+- Study time blocking recommendations
+- Club meeting scheduler
+- Unified student timeline view
 
-### Phase 5: Intelligence & Analytics
-- [ ] Predictive modeling for course demand
-- [ ] Semester-over-semester learning
-- [ ] Department-wide analytics dashboard
-- [ ] Student success correlation analysis
+### Phase 5: Intelligence and Analytics
+- Predictive modeling for course demand
+- Semester-over-semester learning
+- Department-wide analytics dashboard
+- Student success correlation analysis
+- Agent performance optimization
 
 ---
 
-## 🤝 Contributing
+## Architecture Decisions
+
+### Why LangGraph?
+
+**Advantages over direct LLM API calls:**
+
+1. **Structured Workflow:** LangGraph provides a graph-based execution model, making complex multi-step scheduling logic explicit and debuggable
+
+2. **Agent Orchestration:** Multiple specialized agents (planner, optimizer, validator, explainer) can work together with defined handoffs
+
+3. **Checkpointing:** Built-in state persistence allows resuming from interruptions and human-in-the-loop approvals
+
+4. **Tool Integration:** Easy integration of custom constraint satisfaction algorithms and database queries
+
+5. **Observability:** LangSmith integration provides detailed tracing of agent decision-making
+
+6. **Scalability:** Graph-based design scales better than monolithic prompt chains as complexity grows
+
+### Why PostgreSQL?
+
+- Relational data model fits scheduling constraints naturally
+- ACID compliance ensures data consistency
+- Native JSON support for flexible agent state storage
+- LangGraph checkpoint storage compatibility
+- Proven performance at university scale
+
+### Why Flutter?
+
+- Single codebase for web, mobile, and desktop
+- Rich UI components out of the box
+- Strong typing with Dart
+- Hot reload for rapid development
+- Material Design 3 support
+
+---
+
+## Contributing
 
 This is currently a hackathon project. Contributions, issues, and feature requests are welcome!
 
@@ -421,50 +671,50 @@ This is currently a hackathon project. Contributions, issues, and feature reques
 
 ---
 
-## 📝 License
+## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
-## 👥 Team
+## Team
 
-- **[Your Name]** - Project Lead & Full Stack Developer
-- **[Team Member 2]** - AI/ML Engineer
-- **[Team Member 3]** - Frontend Developer
-- **[Team Member 4]** - Backend Developer
+- [Your Name] - Project Lead and Full Stack Developer
+- [Team Member 2] - AI/ML Engineer (LangGraph)
+- [Team Member 3] - Frontend Developer (Flutter)
+- [Team Member 4] - Backend Developer (FastAPI)
 
 ---
 
-## 🙏 Acknowledgments
+## Acknowledgments
 
 - Inspired by the 86% of college students struggling with time management
 - Built for the Unitopia Hackathon 2026
-- Powered by Google Gemini AI
+- Powered by LangGraph and Google Gemini
 - Statistics from academic research on student time management
 
 ---
 
-## 📧 Contact
+## Contact
 
 For questions or feedback, reach out:
-- **Email:** your.email@example.com
-- **Project Link:** [https://github.com/yourusername/unitopia-scheduler](https://github.com/yourusername/unitopia-scheduler)
+- Email: your.email@example.com
+- Project Link: https://github.com/yourusername/unitopia-scheduler
 
 ---
 
-## 🎯 Hackathon Pitch Summary
+## Hackathon Pitch Summary
 
 **Problem:** 86% of students struggle with time management, 54% are stressed because of it. Poor scheduling wastes 10+ hours per week.
 
-**Solution:** AI agent generates optimized timetables in minutes, reducing gaps from 3 hours to 45 minutes, saving admins 90% of scheduling time.
+**Solution:** LangGraph-powered multi-agent system generates optimized timetables in minutes, reducing gaps from 3 hours to 45 minutes, saving admins 90% of scheduling time.
 
-**Tech:** Flutter + PostgreSQL + Gemini AI = Intelligent, explainable, scalable scheduling.
+**Tech:** Flutter + PostgreSQL + LangGraph = Intelligent, explainable, scalable scheduling with full transparency into AI decision-making.
 
-**Impact:** Transform university scheduling from chaos to clarity. Better schedules → Better time management → Reduced stress → Academic success.
+**Impact:** Transform university scheduling from chaos to clarity. Better schedules lead to better time management, reduced stress, and academic success.
 
 **Vision:** Every student's entire academic life, perfectly timed. That's Unitopia.
 
 ---
 
-*Built with ❤️ for students, by students*
+*Built for students, by students*
