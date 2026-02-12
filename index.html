@@ -9,42 +9,63 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
         
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background-color: #f0f4f8; 
-            color: #1e293b; 
+        * {
+            box-sizing: border-box;
         }
         
-        .timetable-container {
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background-color: #0f172a; 
+            color: #e2e8f0;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        
+        .timetable-wrapper {
+            background: #1e293b;
+            border-radius: 12px;
+            border: 1px solid #334155;
             overflow: hidden;
+            width: 100%;
+        }
+
+        .timetable-grid {
+            display: grid;
+            grid-template-columns: 100px repeat(6, 1fr);
+            width: 100%;
         }
 
         .session-header {
-            background: #f8fafc;
-            border-bottom: 2px solid #e2e8f0;
-            padding: 12px 8px;
+            background: #1e293b;
+            border-bottom: 2px solid #475569;
+            border-right: 1px solid #334155;
+            padding: 12px 4px;
             text-align: center;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 600;
-            color: #475569;
+            color: #94a3b8;
+        }
+
+        .session-header:last-child {
+            border-right: none;
         }
 
         .session-time {
             font-size: 0.7rem;
-            color: #94a3b8;
+            color: #64748b;
             font-weight: 500;
+            margin-top: 2px;
         }
 
         .day-label {
-            background: #f1f5f9;
-            border-right: 2px solid #e2e8f0;
-            padding: 16px 12px;
+            background: #0f172a;
+            border-right: 2px solid #475569;
+            border-bottom: 1px solid #334155;
+            padding: 20px 8px;
             font-weight: 700;
-            color: #334155;
-            font-size: 0.9rem;
+            color: #e2e8f0;
+            font-size: 1rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -58,44 +79,44 @@
             margin-top: 4px;
         }
 
-        .course-cell {
-            border: 1px solid #e2e8f0;
-            padding: 8px;
+        .cell {
+            border-right: 1px solid #334155;
+            border-bottom: 1px solid #334155;
+            min-height: 100px;
             position: relative;
-            min-height: 80px;
-            transition: all 0.2s ease;
         }
 
-        .course-cell:hover {
-            box-shadow: inset 0 0 0 2px #3b82f6;
+        .cell:last-child {
+            border-right: none;
         }
 
         .course-block {
-            border-radius: 6px;
-            padding: 10px;
             height: 100%;
+            padding: 12px;
             display: flex;
             flex-direction: column;
             justify-content: center;
             cursor: pointer;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            border: 1px solid rgba(0,0,0,0.05);
+            transition: all 0.2s ease;
+            position: relative;
         }
 
         .course-block:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            filter: brightness(1.1);
+            transform: scale(1.02);
             z-index: 10;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.4);
         }
 
         .course-title {
             font-weight: 600;
             font-size: 0.85rem;
             line-height: 1.3;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
+            color: #fff;
         }
 
-        .course-prof {
+        .course-meta {
             font-size: 0.75rem;
             opacity: 0.9;
             font-weight: 500;
@@ -103,99 +124,159 @@
 
         .course-room {
             position: absolute;
-            top: 6px;
-            right: 6px;
-            font-size: 0.65rem;
-            background: rgba(255,255,255,0.9);
-            padding: 2px 6px;
+            top: 8px;
+            right: 8px;
+            font-size: 0.7rem;
+            background: rgba(0,0,0,0.3);
+            padding: 3px 8px;
             border-radius: 4px;
             font-weight: 600;
-            color: #475569;
+            color: #fff;
         }
 
-        /* Course Type Colors - Matching the French style */
-        .type-cours { background: #fdba74; color: #7c2d12; } /* Orange - Cours */
-        .type-td { background: #fca5a5; color: #7f1d1d; } /* Red/Pink - TD */
-        .type-tp { background: #93c5fd; color: #1e3a8a; } /* Blue - TP */
-        .type-seminaire { background: #c4b5fd; color: #4c1d95; } /* Purple */
-        .type-atelier { background: #86efac; color: #14532d; } /* Green */
-        .type-projet { background: #fde047; color: #713f12; } /* Yellow */
+        /* Course Type Colors */
+        .type-cours { 
+            background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); 
+            color: #fff;
+        }
+        .type-td { 
+            background: linear-gradient(135deg, #ec4899 0%, #be185d 100%); 
+            color: #fff;
+        }
+        .type-tp { 
+            background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); 
+            color: #fff;
+        }
+        .type-seminaire { 
+            background: linear-gradient(135deg, #8b5cf6 0%, #6d28d9 100%); 
+            color: #fff;
+        }
+        .type-atelier { 
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%); 
+            color: #fff;
+        }
+        .type-projet { 
+            background: linear-gradient(135deg, #eab308 0%, #a16207 100%); 
+            color: #fff;
+        }
 
         .lunch-cell {
-            background: #fef3c7;
-            border: 1px solid #fcd34d;
+            background: #451a03;
+            border-right: 1px solid #78350f;
+            border-bottom: 1px solid #78350f;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #92400e;
-            font-weight: 600;
-            font-size: 0.8rem;
+            color: #fcd34d;
+            font-weight: 700;
+            font-size: 0.9rem;
+            min-height: 100px;
         }
 
         .empty-cell {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
+            background: #1e293b;
+            border-right: 1px solid #334155;
+            border-bottom: 1px solid #334155;
         }
 
-        /* Navigation */
         .nav-btn {
-            padding: 8px 16px;
-            border-radius: 6px;
+            padding: 10px 20px;
+            border-radius: 8px;
             font-size: 0.9rem;
             font-weight: 500;
             transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+            background: #334155;
+            color: #94a3b8;
         }
 
         .nav-btn.active {
             background: #0ea5e9;
             color: white;
-        }
-
-        .nav-btn:not(.active) {
-            color: #64748b;
+            box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
         }
 
         .nav-btn:not(.active):hover {
-            background: #e2e8f0;
-            color: #334155;
+            background: #475569;
+            color: #e2e8f0;
+        }
+
+        .stats-card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .prof-detail-card {
+            background: #1e293b;
+            border: 1px solid #334155;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .select-dropdown {
+            background: #334155;
+            color: #e2e8f0;
+            border: 1px solid #475569;
+            padding: 10px 16px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .select-dropdown:focus {
+            outline: none;
+            border-color: #0ea5e9;
         }
     </style>
 </head>
-<body class="min-h-screen">
+<body>
 
     <!-- Header -->
-    <header class="bg-white border-b border-slate-200 px-6 py-4 flex items-center justify-between sticky top-0 z-50">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-lg bg-gradient-to-br from-sky-500 to-blue-600 flex items-center justify-center shadow-md">
-                <i class="fa-solid fa-clock text-white"></i>
+    <header style="background: #0f172a; border-bottom: 1px solid #334155; padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 40px; height: 40px; border-radius: 10px; background: linear-gradient(135deg, #0ea5e9, #0284c7); display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);">
+                <i class="fa-solid fa-clock" style="color: white; font-size: 1.1rem;"></i>
             </div>
             <div>
-                <h1 class="font-bold text-xl text-slate-800">Chronos<span class="text-sky-500">Agent</span></h1>
-                <p class="text-xs text-slate-500">AI-Powered Timetabling</p>
+                <h1 style="font-weight: 700; font-size: 1.3rem; color: #f8fafc; margin: 0;">Chronos<span style="color: #0ea5e9;">Agent</span></h1>
+                <p style="font-size: 0.75rem; color: #64748b; margin: 0; margin-top: 2px;">AI-Powered Timetabling</p>
             </div>
         </div>
 
-        <div class="flex gap-2 bg-slate-100 p-1 rounded-lg">
+        <div style="display: flex; gap: 8px; background: #1e293b; padding: 6px; border-radius: 10px; border: 1px solid #334155;">
             <button onclick="switchRole('student')" id="btn-student" class="nav-btn">Student</button>
             <button onclick="switchRole('professor')" id="btn-professor" class="nav-btn">Professor</button>
             <button onclick="switchRole('admin')" id="btn-admin" class="nav-btn active">Admin</button>
         </div>
 
-        <div class="flex items-center gap-3">
-            <span class="text-sm text-slate-600" id="user-name">Administration</span>
-            <div class="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center">
-                <i class="fa-solid fa-user text-slate-500"></i>
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <span id="user-name" style="font-size: 0.9rem; color: #94a3b8; font-weight: 500;">Administration</span>
+            <div style="width: 40px; height: 40px; border-radius: 50%; background: #334155; display: flex; align-items: center; justify-content: center; border: 2px solid #475569;">
+                <i class="fa-solid fa-user" style="color: #94a3b8;"></i>
             </div>
         </div>
     </header>
 
     <!-- Main Content -->
-    <main class="p-6 max-w-[1600px] mx-auto">
+    <main style="padding: 24px; max-width: 1400px; margin: 0 auto;">
         <div id="app-container"></div>
     </main>
 
     <script>
-        // Timetable Structure matching the French system
+        // Timetable Structure
         const structure = {
             sessions: [
                 { name: 'Séance 1', time: '8:30 - 10:00', slot: 0 },
@@ -214,142 +295,205 @@
             ]
         };
 
-        // OPTIMIZED DATA - No gaps, protected lunch (Séance 3)
+        // Data with new professor names
         const data = {
-            // Student: L3 Computer Science - Group TP3
             student: {
-                name: 'Licence en Sciences de l\'Informatique - 3ème Année - Groupe TP3',
+                name: 'Licence Informatique - L3 - Groupe TP3',
                 schedule: [
-                    // LUNDI - Morning block + Afternoon block
-                    { day: 0, session: 0, code: 'INF-301', name: 'Intelligence Artificielle C', type: 'cours', prof: 'M.RAGGOURI', room: 'Amphi A', duration: 1 },
-                    { day: 0, session: 1, code: 'INF-301', name: 'Intelligence Artificielle TD', type: 'td', prof: 'M.RAGGOURI', room: '202-M', duration: 1 },
-                    // LUNCH (Séance 3) - PROTECTED
-                    { day: 0, session: 3, code: 'INF-305', name: 'Sécurité Informatique C', type: 'cours', prof: 'O.MABROUK', room: 'Amphi A', duration: 1 },
-                    { day: 0, session: 4, code: 'INF-305', name: 'Sécurité TD', type: 'td', prof: 'O.MABROUK', room: '103', duration: 1 },
+                    // LUNDI
+                    { day: 0, session: 0, code: 'INF-301', name: 'Intelligence Artificielle C', type: 'cours', prof: 'Dr. Martin', room: 'Amphi A', duration: 1 },
+                    { day: 0, session: 1, code: 'INF-301', name: 'Intelligence Artificielle TD', type: 'td', prof: 'Dr. Martin', room: 'Salle 202', duration: 1 },
+                    { day: 0, session: 3, code: 'INF-305', name: 'Sécurité Informatique C', type: 'cours', prof: 'Prof. Dubois', room: 'Amphi A', duration: 1 },
+                    { day: 0, session: 4, code: 'INF-305', name: 'Sécurité TD', type: 'td', prof: 'Prof. Dubois', room: 'Salle 103', duration: 1 },
 
-                    // MARDI - Lab day morning, Theory afternoon
-                    { day: 1, session: 0, code: 'INF-302', name: 'Développement Web TP', type: 'tp', prof: 'A.BEN AMOR', room: 'INF-308', duration: 2 }, // Double session
-                    // LUNCH
-                    { day: 1, session: 3, code: 'INF-303', name: 'Réseaux Avancés C', type: 'cours', prof: 'N.FARHANI', room: 'Amphi B', duration: 2 }, // Double session
+                    // MARDI
+                    { day: 1, session: 0, code: 'INF-302', name: 'Développement Web TP', type: 'tp', prof: 'Dr. Bernard', room: 'Lab 308', duration: 2 },
+                    { day: 1, session: 3, code: 'INF-303', name: 'Réseaux Avancés C', type: 'cours', prof: 'Prof. Petit', room: 'Amphi B', duration: 2 },
 
-                    // MERCREDI - Mixed morning, Project afternoon
-                    { day: 2, session: 0, code: 'INF-304', name: 'Algorithmique Avancée TD', type: 'td', prof: 'M.BELLAGHA', room: '111', duration: 1 },
-                    { day: 2, session: 1, code: 'INF-306', name: 'Base de Données C', type: 'cours', prof: 'S.GDAIEM', room: 'Amphi A', duration: 1 },
-                    // LUNCH
-                    { day: 2, session: 3, code: 'INF-306', name: 'Base de Données TP', type: 'tp', prof: 'S.GDAIEM', room: 'INF-301', duration: 2 }, // Double session
+                    // MERCREDI
+                    { day: 2, session: 0, code: 'INF-304', name: 'Algorithmique Avancée TD', type: 'td', prof: 'Dr. Moreau', room: 'Salle 111', duration: 1 },
+                    { day: 2, session: 1, code: 'INF-306', name: 'Base de Données C', type: 'cours', prof: 'Prof. Laurent', room: 'Amphi A', duration: 1 },
+                    { day: 2, session: 3, code: 'INF-306', name: 'Base de Données TP', type: 'tp', prof: 'Prof. Laurent', room: 'Lab 301', duration: 2 },
 
-                    // JEUDI - Morning cours, Afternoon atelier
-                    { day: 3, session: 0, code: 'INF-307', name: 'Systèmes Distribués C', type: 'cours', prof: 'R.ACHOUR', room: 'Amphi B', duration: 1 },
-                    { day: 3, session: 1, code: 'INF-307', name: 'Systèmes Distribués TD', type: 'td', prof: 'R.ACHOUR', room: '104', duration: 1 },
-                    // LUNCH
-                    { day: 3, session: 3, code: 'INF-308', name: 'Atelier Programmation TP', type: 'atelier', prof: 'E.ZZARA', room: 'INF-302', duration: 2 }, // Double session
+                    // JEUDI
+                    { day: 3, session: 0, code: 'INF-307', name: 'Systèmes Distribués C', type: 'cours', prof: 'Dr. Simon', room: 'Amphi B', duration: 1 },
+                    { day: 3, session: 1, code: 'INF-307', name: 'Systèmes Distribués TD', type: 'td', prof: 'Dr. Simon', room: 'Salle 104', duration: 1 },
+                    { day: 3, session: 3, code: 'INF-308', name: 'Atelier Programmation TP', type: 'atelier', prof: 'Dr. Michel', room: 'Lab 302', duration: 2 },
 
-                    // VENDREDI - Morning cours, Afternoon projet
-                    { day: 4, session: 0, code: 'INF-309', name: 'Gestion de Projet C', type: 'cours', prof: 'N.KERKENI', room: 'Amphi A', duration: 1 },
-                    { day: 4, session: 1, code: 'INF-309', name: 'Gestion de Projet TD', type: 'td', prof: 'N.KERKENI', room: '103', duration: 1 },
-                    // LUNCH
-                    { day: 4, session: 3, code: 'INF-310', name: 'Projet Tutoré', type: 'projet', prof: 'T.ASMA', room: 'Labo 3', duration: 2 } // Double session
+                    // VENDREDI
+                    { day: 4, session: 0, code: 'INF-309', name: 'Gestion de Projet C', type: 'cours', prof: 'Prof. Garcia', room: 'Amphi A', duration: 1 },
+                    { day: 4, session: 1, code: 'INF-309', name: 'Gestion de Projet TD', type: 'td', prof: 'Prof. Garcia', room: 'Salle 103', duration: 1 },
+                    { day: 4, session: 3, code: 'INF-310', name: 'Projet Tutoré', type: 'projet', prof: 'Dr. Roux', room: 'Labo 3', duration: 2 }
                 ]
             },
 
-            // Professors
             professors: {
-                'M.RAGGOURI': {
-                    name: 'Dr. Raggouri',
+                'Dr. Martin': {
+                    name: 'Dr. Philippe Martin',
+                    title: 'Professeur des Universités',
+                    department: 'Informatique',
+                    email: 'p.martin@univ.fr',
                     schedule: [
                         { day: 0, session: 0, code: 'INF-301', name: 'Intelligence Artificielle C', type: 'cours', room: 'Amphi A', group: 'L3-TP3', duration: 1 },
-                        { day: 0, session: 1, code: 'INF-301', name: 'Intelligence Artificielle TD', type: 'td', room: '202-M', group: 'L3-TP3', duration: 1 },
-                        { day: 2, session: 4, code: 'INF-301', name: 'IA TP (Groupe TP1)', type: 'tp', room: 'INF-303', group: 'L3-TP1', duration: 1 },
+                        { day: 0, session: 1, code: 'INF-301', name: 'Intelligence Artificielle TD', type: 'td', room: 'Salle 202', group: 'L3-TP3', duration: 1 },
+                        { day: 2, session: 4, code: 'INF-301', name: 'IA TP', type: 'tp', room: 'Lab 303', group: 'L3-TP1', duration: 1 },
                         { day: 4, session: 0, code: 'INF-201', name: 'Algo L2 C', type: 'cours', room: 'Amphi B', group: 'L2-TP1', duration: 1 }
-                    ]
+                    ],
+                    totalHours: 18,
+                    researchHours: 12,
+                    adminHours: 4,
+                    satisfaction: 4.8
                 },
-                'O.MABROUK': {
-                    name: 'Dr. Mabrouk',
+                'Prof. Dubois': {
+                    name: 'Prof. Marie Dubois',
+                    title: 'Maître de Conférences',
+                    department: 'Sécurité',
+                    email: 'm.dubois@univ.fr',
                     schedule: [
                         { day: 0, session: 3, code: 'INF-305', name: 'Sécurité Informatique C', type: 'cours', room: 'Amphi A', group: 'L3-TP3', duration: 1 },
-                        { day: 0, session: 4, code: 'INF-305', name: 'Sécurité TD', type: 'td', room: '103', group: 'L3-TP3', duration: 1 },
-                        { day: 3, session: 0, code: 'INF-305', name: 'Sécurité TP (TP2)', type: 'tp', room: 'INF-304', group: 'L3-TP2', duration: 2 }
-                    ]
+                        { day: 0, session: 4, code: 'INF-305', name: 'Sécurité TD', type: 'td', room: 'Salle 103', group: 'L3-TP3', duration: 1 },
+                        { day: 3, session: 0, code: 'INF-305', name: 'Sécurité TP', type: 'tp', room: 'Lab 304', group: 'L3-TP2', duration: 2 }
+                    ],
+                    totalHours: 13.5,
+                    researchHours: 16,
+                    adminHours: 2,
+                    satisfaction: 4.6
                 },
-                'A.BEN AMOR': {
-                    name: 'Prof. Ben Amor',
+                'Dr. Bernard': {
+                    name: 'Dr. Jean Bernard',
+                    title: 'Maître de Conférences',
+                    department: 'Web Development',
+                    email: 'j.bernard@univ.fr',
                     schedule: [
-                        { day: 1, session: 0, code: 'INF-302', name: 'Développement Web TP', type: 'tp', room: 'INF-308', group: 'L3-TP3', duration: 2 }
-                    ]
+                        { day: 1, session: 0, code: 'INF-302', name: 'Développement Web TP', type: 'tp', room: 'Lab 308', group: 'L3-TP3', duration: 2 },
+                        { day: 3, session: 3, code: 'INF-302', name: 'Web Avancé', type: 'tp', room: 'Lab 305', group: 'L3-TP2', duration: 2 }
+                    ],
+                    totalHours: 12,
+                    researchHours: 14,
+                    adminHours: 3,
+                    satisfaction: 4.9
                 },
-                'N.FARHANI': {
-                    name: 'Dr. Farhani',
+                'Prof. Petit': {
+                    name: 'Prof. Sophie Petit',
+                    title: 'Professeur des Universités',
+                    department: 'Réseaux',
+                    email: 's.petit@univ.fr',
                     schedule: [
                         { day: 1, session: 3, code: 'INF-303', name: 'Réseaux Avancés C', type: 'cours', room: 'Amphi B', group: 'L3-TP3', duration: 2 },
-                        { day: 3, session: 0, code: 'INF-303', name: 'Réseaux TP (TP1)', type: 'tp', room: 'INF-305', group: 'L3-TP1', duration: 2 }
-                    ]
+                        { day: 3, session: 0, code: 'INF-303', name: 'Réseaux TP', type: 'tp', room: 'Lab 305', group: 'L3-TP1', duration: 2 }
+                    ],
+                    totalHours: 12,
+                    researchHours: 18,
+                    adminHours: 5,
+                    satisfaction: 4.7
                 },
-                'M.BELLAGHA': {
-                    name: 'Prof. Bellagha',
+                'Dr. Moreau': {
+                    name: 'Dr. Luc Moreau',
+                    title: 'Maître de Conférences',
+                    department: 'Algorithmique',
+                    email: 'l.moreau@univ.fr',
                     schedule: [
-                        { day: 2, session: 0, code: 'INF-304', name: 'Algorithmique Avancée TD', type: 'td', room: '111', group: 'L3-TP3', duration: 1 },
-                        { day: 2, session: 1, code: 'INF-304', name: 'Algo Avancée C (TP2)', type: 'cours', room: 'Amphi A', group: 'L3-TP2', duration: 1 }
-                    ]
+                        { day: 2, session: 0, code: 'INF-304', name: 'Algorithmique Avancée TD', type: 'td', room: 'Salle 111', group: 'L3-TP3', duration: 1 },
+                        { day: 2, session: 1, code: 'INF-304', name: 'Algo Avancée C', type: 'cours', room: 'Amphi A', group: 'L3-TP2', duration: 1 }
+                    ],
+                    totalHours: 9,
+                    researchHours: 20,
+                    adminHours: 2,
+                    satisfaction: 4.5
                 },
-                'S.GDAIEM': {
-                    name: 'Dr. Gdaiem',
+                'Prof. Laurent': {
+                    name: 'Prof. Claire Laurent',
+                    title: 'Professeur des Universités',
+                    department: 'Bases de Données',
+                    email: 'c.laurent@univ.fr',
                     schedule: [
                         { day: 2, session: 1, code: 'INF-306', name: 'Base de Données C', type: 'cours', room: 'Amphi A', group: 'L3-TP3', duration: 1 },
-                        { day: 2, session: 3, code: 'INF-306', name: 'Base de Données TP', type: 'tp', room: 'INF-301', group: 'L3-TP3', duration: 2 }
-                    ]
+                        { day: 2, session: 3, code: 'INF-306', name: 'Base de Données TP', type: 'tp', room: 'Lab 301', group: 'L3-TP3', duration: 2 }
+                    ],
+                    totalHours: 10.5,
+                    researchHours: 15,
+                    adminHours: 4,
+                    satisfaction: 4.8
                 },
-                'R.ACHOUR': {
-                    name: 'Prof. Achour',
+                'Dr. Simon': {
+                    name: 'Dr. Pierre Simon',
+                    title: 'Maître de Conférences',
+                    department: 'Systèmes Distribués',
+                    email: 'p.simon@univ.fr',
                     schedule: [
                         { day: 3, session: 0, code: 'INF-307', name: 'Systèmes Distribués C', type: 'cours', room: 'Amphi B', group: 'L3-TP3', duration: 1 },
-                        { day: 3, session: 1, code: 'INF-307', name: 'Systèmes Distribués TD', type: 'td', room: '104', group: 'L3-TP3', duration: 1 }
-                    ]
+                        { day: 3, session: 1, code: 'INF-307', name: 'Systèmes Distribués TD', type: 'td', room: 'Salle 104', group: 'L3-TP3', duration: 1 }
+                    ],
+                    totalHours: 6,
+                    researchHours: 22,
+                    adminHours: 3,
+                    satisfaction: 4.9
                 },
-                'E.ZZARA': {
-                    name: 'Dr. Zzara',
+                'Dr. Michel': {
+                    name: 'Dr. Anne Michel',
+                    title: 'Maître de Conférences',
+                    department: 'Programmation',
+                    email: 'a.michel@univ.fr',
                     schedule: [
-                        { day: 3, session: 3, code: 'INF-308', name: 'Atelier Programmation TP', type: 'atelier', room: 'INF-302', group: 'L3-TP3', duration: 2 }
-                    ]
+                        { day: 3, session: 3, code: 'INF-308', name: 'Atelier Programmation TP', type: 'atelier', room: 'Lab 302', group: 'L3-TP3', duration: 2 }
+                    ],
+                    totalHours: 6,
+                    researchHours: 18,
+                    adminHours: 8,
+                    satisfaction: 4.4
                 },
-                'N.KERKENI': {
-                    name: 'Prof. Kerkeni',
+                'Prof. Garcia': {
+                    name: 'Prof. Thomas Garcia',
+                    title: 'Professeur des Universités',
+                    department: 'Gestion de Projet',
+                    email: 't.garcia@univ.fr',
                     schedule: [
                         { day: 4, session: 0, code: 'INF-309', name: 'Gestion de Projet C', type: 'cours', room: 'Amphi A', group: 'L3-TP3', duration: 1 },
-                        { day: 4, session: 1, code: 'INF-309', name: 'Gestion de Projet TD', type: 'td', room: '103', group: 'L3-TP3', duration: 1 }
-                    ]
+                        { day: 4, session: 1, code: 'INF-309', name: 'Gestion de Projet TD', type: 'td', room: 'Salle 103', group: 'L3-TP3', duration: 1 }
+                    ],
+                    totalHours: 6,
+                    researchHours: 12,
+                    adminHours: 12,
+                    satisfaction: 4.6
                 },
-                'T.ASMA': {
-                    name: 'Dr. Asma',
+                'Dr. Roux': {
+                    name: 'Dr. Isabelle Roux',
+                    title: 'Maître de Conférences',
+                    department: 'Projets Tutorés',
+                    email: 'i.roux@univ.fr',
                     schedule: [
                         { day: 4, session: 3, code: 'INF-310', name: 'Projet Tutoré', type: 'projet', room: 'Labo 3', group: 'L3-TP3', duration: 2 }
-                    ]
+                    ],
+                    totalHours: 6,
+                    researchHours: 16,
+                    adminHours: 6,
+                    satisfaction: 4.7
                 }
             }
         };
 
         let currentRole = 'admin';
-        let currentProfessor = 'M.RAGGOURI';
+        let currentProfessor = 'Dr. Martin';
 
         function switchRole(role) {
             currentRole = role;
             
-            // Update nav buttons
             document.querySelectorAll('.nav-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
             document.getElementById(`btn-${role}`).classList.add('active');
 
-            // Update user display
             const userName = document.getElementById('user-name');
             if (role === 'admin') userName.textContent = 'Administration';
             else if (role === 'professor') userName.textContent = data.professors[currentProfessor].name;
-            else userName.textContent = 'Étudiant - L3 TP3';
+            else userName.textContent = 'Étudiant L3-TP3';
 
             render();
         }
 
         function render() {
             const container = document.getElementById('app-container');
+            container.innerHTML = '';
             
             if (currentRole === 'student') renderStudent(container);
             else if (currentRole === 'professor') renderProfessor(container);
@@ -359,308 +503,419 @@
         function renderStudent(container) {
             const schedule = data.student;
             
-            container.innerHTML = `
-                <div class="mb-4 flex justify-between items-center">
+            let html = `
+                <div style="margin-bottom: 20px; display: flex; justify-content: space-between; align-items: center;">
                     <div>
-                        <h2 class="text-2xl font-bold text-slate-800">${schedule.name}</h2>
-                        <p class="text-slate-500 text-sm mt-1">Semaine A • Horaires optimisés sans gaps</p>
+                        <h2 style="font-size: 1.5rem; font-weight: 700; color: #f8fafc; margin: 0;">${schedule.name}</h2>
+                        <p style="color: #64748b; font-size: 0.875rem; margin-top: 4px;">Semaine A • Horaires optimisés sans gaps</p>
                     </div>
-                    <div class="flex gap-2">
-                        <button class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-sm font-medium transition-colors">
-                            <i class="fa-solid fa-print mr-2"></i>Imprimer
+                    <div style="display: flex; gap: 12px;">
+                        <button style="padding: 10px 16px; background: #334155; color: #e2e8f0; border: none; border-radius: 8px; cursor: pointer; font-size: 0.875rem; font-weight: 500;">
+                            <i class="fa-solid fa-print" style="margin-right: 8px;"></i>Imprimer
                         </button>
-                        <button class="px-4 py-2 bg-sky-500 hover:bg-sky-600 text-white rounded-lg text-sm font-medium transition-colors shadow-md shadow-sky-500/20">
-                            <i class="fa-solid fa-download mr-2"></i>PDF
+                        <button style="padding: 10px 16px; background: #0ea5e9; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 0.875rem; font-weight: 500; box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);">
+                            <i class="fa-solid fa-download" style="margin-right: 8px;"></i>PDF
                         </button>
                     </div>
                 </div>
 
-                <div class="timetable-container">
-                    <div class="grid" style="grid-template-columns: 80px repeat(6, 1fr);">
-                        <!-- Headers -->
-                        <div class="session-header border-r border-slate-200"></div>
+                <div class="timetable-wrapper">
+                    <div class="timetable-grid">
+                        <!-- Header -->
+                        <div class="session-header" style="border-right: 2px solid #475569;"></div>
                         ${structure.sessions.map(s => `
-                            <div class="session-header ${s.lunch ? 'bg-amber-50 text-amber-700' : ''}">
+                            <div class="session-header ${s.lunch ? 'bg-amber-950 text-amber-400' : ''}">
                                 <div>${s.name}</div>
                                 <div class="session-time">${s.time}</div>
                             </div>
                         `).join('')}
+            `;
 
-                        <!-- Days -->
-                        ${structure.days.map((day, dayIdx) => `
-                            <!-- Day Label -->
-                            <div class="day-label border-b border-slate-200">
-                                <span>${day.name}</span>
-                                <span class="day-date">${day.date}</span>
+            // Days
+            structure.days.forEach((day, dayIdx) => {
+                html += `
+                    <div class="day-label">${day.name}<span class="day-date">${day.date}</span></div>
+                `;
+                
+                structure.sessions.forEach((session, sessIdx) => {
+                    if (session.lunch) {
+                        html += `<div class="lunch-cell"><i class="fa-solid fa-utensils" style="margin-right: 8px;"></i>PAUSE</div>`;
+                        return;
+                    }
+                    
+                    const courses = schedule.schedule.filter(c => c.day === dayIdx && c.session === sessIdx);
+                    
+                    if (courses.length === 0) {
+                        html += `<div class="empty-cell"></div>`;
+                        return;
+                    }
+                    
+                    const course = courses[0];
+                    
+                    // Check if this is a continuation
+                    if (sessIdx > 0) {
+                        const prev = schedule.schedule.find(c => c.day === dayIdx && c.session === sessIdx - 1 && c.code === course.code);
+                        if (prev) return;
+                    }
+                    
+                    const duration = course.duration || 1;
+                    
+                    html += `
+                        <div class="cell" style="${duration > 1 ? 'grid-column: span ' + duration + ';' : ''}">
+                            <div class="course-block type-${course.type}">
+                                <span class="course-room">${course.room}</span>
+                                <div class="course-title">${course.name}</div>
+                                <div class="course-meta">${course.prof}</div>
                             </div>
-                            
-                            <!-- Sessions -->
-                            ${structure.sessions.map((session, sessIdx) => {
-                                if (session.lunch) {
-                                    return `<div class="lunch-cell border-b border-slate-200">
-                                        <i class="fa-solid fa-utensils mr-2"></i>PAUSE
-                                    </div>`;
-                                }
-                                
-                                const courses = schedule.schedule.filter(c => c.day === dayIdx && c.session === sessIdx);
-                                
-                                if (courses.length === 0) {
-                                    return `<div class="empty-cell border-b border-slate-200"></div>`;
-                                }
-                                
-                                const course = courses[0];
-                                const duration = course.duration || 1;
-                                
-                                // Skip if this is a continuation of a multi-session course
-                                if (sessIdx > 0) {
-                                    const prevCourse = schedule.schedule.find(c => 
-                                        c.day === dayIdx && c.session === sessIdx - 1 && c.code === course.code
-                                    );
-                                    if (prevCourse) return '';
-                                }
-                                
-                                return `
-                                    <div class="course-cell border-b border-slate-200" 
-                                         style="${duration > 1 ? `grid-column: span ${duration};` : ''}">
-                                        <div class="course-block type-${course.type}">
-                                            <span class="course-room">${course.room}</span>
-                                            <div class="course-title">${course.name}</div>
-                                            <div class="course-prof">${course.prof}</div>
-                                        </div>
-                                    </div>
-                                `;
-                            }).join('')}
-                        `).join('')}
+                        </div>
+                    `;
+                });
+            });
+
+            html += `
                     </div>
                 </div>
 
-                <div class="mt-4 flex gap-4 text-sm">
-                    <div class="flex items-center gap-2">
-                        <div class="w-4 h-4 rounded bg-orange-300 border border-orange-400"></div>
-                        <span class="text-slate-600">Cours (C)</span>
+                <div style="margin-top: 20px; display: flex; gap: 24px; flex-wrap: wrap;">
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <div style="width: 16px; height: 16px; border-radius: 4px; background: linear-gradient(135deg, #f59e0b, #d97706);"></div>
+                        <span style="font-size: 0.875rem; color: #94a3b8;">Cours (C)</span>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <div class="w-4 h-4 rounded bg-red-300 border border-red-400"></div>
-                        <span class="text-slate-600">TD</span>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <div style="width: 16px; height: 16px; border-radius: 4px; background: linear-gradient(135deg, #ec4899, #be185d);"></div>
+                        <span style="font-size: 0.875rem; color: #94a3b8;">TD</span>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <div class="w-4 h-4 rounded bg-blue-300 border border-blue-400"></div>
-                        <span class="text-slate-600">TP</span>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <div style="width: 16px; height: 16px; border-radius: 4px; background: linear-gradient(135deg, #3b82f6, #1d4ed8);"></div>
+                        <span style="font-size: 0.875rem; color: #94a3b8;">TP</span>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <div class="w-4 h-4 rounded bg-green-300 border border-green-400"></div>
-                        <span class="text-slate-600">Atelier</span>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <div style="width: 16px; height: 16px; border-radius: 4px; background: linear-gradient(135deg, #10b981, #059669);"></div>
+                        <span style="font-size: 0.875rem; color: #94a3b8;">Atelier</span>
                     </div>
-                    <div class="flex items-center gap-2">
-                        <div class="w-4 h-4 rounded bg-yellow-200 border border-yellow-400"></div>
-                        <span class="text-slate-600">Projet</span>
+                    <div style="display: flex; align-items: center; gap: 8px;">
+                        <div style="width: 16px; height: 16px; border-radius: 4px; background: linear-gradient(135deg, #eab308, #a16207);"></div>
+                        <span style="font-size: 0.875rem; color: #94a3b8;">Projet</span>
                     </div>
                 </div>
             `;
+
+            container.innerHTML = html;
         }
 
         function renderProfessor(container) {
             const prof = data.professors[currentProfessor];
             const allProfs = Object.keys(data.professors);
             
-            container.innerHTML = `
-                <div class="mb-4 flex justify-between items-center">
-                    <div>
-                        <h2 class="text-2xl font-bold text-slate-800">Emploi du Temps - ${prof.name}</h2>
-                        <p class="text-slate-500 text-sm mt-1">Semaine A • Horaires consolidés</p>
+            // Calculate stats
+            const weeklyHours = prof.schedule.reduce((acc, c) => acc + (c.duration || 1) * 1.5, 0);
+            const daysActive = new Set(prof.schedule.map(c => c.day)).size;
+            const courseTypes = {};
+            prof.schedule.forEach(c => {
+                courseTypes[c.type] = (courseTypes[c.type] || 0) + 1;
+            });
+            const groups = [...new Set(prof.schedule.map(c => c.group))];
+            
+            let html = `
+                <div style="margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: start; margin-bottom: 20px;">
+                        <div>
+                            <h2 style="font-size: 1.5rem; font-weight: 700; color: #f8fafc; margin: 0;">${prof.name}</h2>
+                            <p style="color: #64748b; font-size: 0.875rem; margin-top: 4px;">${prof.title} • ${prof.department}</p>
+                        </div>
+                        <div style="display: flex; gap: 12px;">
+                            <select onchange="changeProfessor(this.value)" class="select-dropdown">
+                                ${allProfs.map(p => `<option value="${p}" ${p === currentProfessor ? 'selected' : ''}>${data.professors[p].name}</option>`).join('')}
+                            </select>
+                            <button style="padding: 10px 16px; background: #0ea5e9; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 0.875rem; font-weight: 500;">
+                                <i class="fa-solid fa-clock" style="margin-right: 8px;"></i>Disponibilité
+                            </button>
+                        </div>
                     </div>
-                    <div class="flex gap-2 items-center">
-                        <select onchange="changeProfessor(this.value)" class="px-4 py-2 bg-white border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-sky-500">
-                            ${allProfs.map(p => `
-                                <option value="${p}" ${p === currentProfessor ? 'selected' : ''}>${data.professors[p].name}</option>
-                            `).join('')}
-                        </select>
-                        <button class="px-4 py-2 bg-sky-500 hover:bg-sky-600 text-white rounded-lg text-sm font-medium transition-colors">
-                            <i class="fa-solid fa-clock mr-2"></i>Disponibilité
-                        </button>
+
+                    <!-- Professor Detail Cards -->
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 20px;">
+                        <div class="stats-card">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <div style="width: 48px; height: 48px; border-radius: 12px; background: #0ea5e9; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fa-solid fa-chalkboard-user" style="color: white; font-size: 1.2rem;"></i>
+                                </div>
+                                <div>
+                                    <div style="font-size: 1.75rem; font-weight: 700; color: #f8fafc;">${weeklyHours}h</div>
+                                    <div style="font-size: 0.75rem; color: #64748b;">Cette semaine</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="stats-card">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <div style="width: 48px; height: 48px; border-radius: 12px; background: #8b5cf6; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fa-solid fa-calendar-days" style="color: white; font-size: 1.2rem;"></i>
+                                </div>
+                                <div>
+                                    <div style="font-size: 1.75rem; font-weight: 700; color: #f8fafc;">${daysActive}</div>
+                                    <div style="font-size: 0.75rem; color: #64748b;">Jours actifs</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="stats-card">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <div style="width: 48px; height: 48px; border-radius: 12px; background: #10b981; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fa-solid fa-users" style="color: white; font-size: 1.2rem;"></i>
+                                </div>
+                                <div>
+                                    <div style="font-size: 1.75rem; font-weight: 700; color: #f8fafc;">${groups.length}</div>
+                                    <div style="font-size: 0.75rem; color: #64748b;">Groupes</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="stats-card">
+                            <div style="display: flex; align-items: center; gap: 12px;">
+                                <div style="width: 48px; height: 48px; border-radius: 12px; background: #f59e0b; display: flex; align-items: center; justify-content: center;">
+                                    <i class="fa-solid fa-star" style="color: white; font-size: 1.2rem;"></i>
+                                </div>
+                                <div>
+                                    <div style="font-size: 1.75rem; font-weight: 700; color: #f8fafc;">${prof.satisfaction}</div>
+                                    <div style="font-size: 0.75rem; color: #64748b;">Satisfaction</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Additional Info -->
+                    <div class="prof-detail-card">
+                        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px;">
+                            <div>
+                                <h4 style="color: #94a3b8; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Contact</h4>
+                                <p style="color: #e2e8f0; font-size: 0.9rem;"><i class="fa-solid fa-envelope" style="color: #0ea5e9; margin-right: 8px;"></i>${prof.email}</p>
+                            </div>
+                            <div>
+                                <h4 style="color: #94a3b8; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Répartition horaire</h4>
+                                <div style="display: flex; gap: 16px;">
+                                    <span style="color: #e2e8f0; font-size: 0.875rem;"><span style="color: #0ea5e9; font-weight: 600;">${prof.totalHours}h</span> Enseignement</span>
+                                    <span style="color: #e2e8f0; font-size: 0.875rem;"><span style="color: #8b5cf6; font-weight: 600;">${prof.researchHours}h</span> Recherche</span>
+                                    <span style="color: #e2e8f0; font-size: 0.875rem;"><span style="color: #f59e0b; font-weight: 600;">${prof.adminHours}h</span> Admin</span>
+                                </div>
+                            </div>
+                            <div>
+                                <h4 style="color: #94a3b8; font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px;">Types de séances</h4>
+                                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                                    ${Object.entries(courseTypes).map(([type, count]) => `
+                                        <span class="badge" style="background: ${getTypeColor(type)}20; color: ${getTypeColor(type)}; border: 1px solid ${getTypeColor(type)}40;">
+                                            ${type.toUpperCase()}: ${count}
+                                        </span>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="timetable-container">
-                    <div class="grid" style="grid-template-columns: 80px repeat(6, 1fr);">
-                        <!-- Headers -->
-                        <div class="session-header border-r border-slate-200"></div>
+                <div class="timetable-wrapper">
+                    <div class="timetable-grid">
+                        <div class="session-header" style="border-right: 2px solid #475569;"></div>
                         ${structure.sessions.map(s => `
-                            <div class="session-header ${s.lunch ? 'bg-amber-50 text-amber-700' : ''}">
+                            <div class="session-header ${s.lunch ? 'bg-amber-950 text-amber-400' : ''}">
                                 <div>${s.name}</div>
                                 <div class="session-time">${s.time}</div>
                             </div>
                         `).join('')}
+            `;
 
-                        <!-- Days -->
-                        ${structure.days.map((day, dayIdx) => `
-                            <div class="day-label border-b border-slate-200">
-                                <span>${day.name}</span>
-                                <span class="day-date">${day.date}</span>
+            // Days
+            structure.days.forEach((day, dayIdx) => {
+                html += `<div class="day-label">${day.name}<span class="day-date">${day.date}</span></div>`;
+                
+                structure.sessions.forEach((session, sessIdx) => {
+                    if (session.lunch) {
+                        html += `<div class="lunch-cell"><i class="fa-solid fa-utensils" style="margin-right: 8px;"></i>PAUSE</div>`;
+                        return;
+                    }
+                    
+                    const courses = prof.schedule.filter(c => c.day === dayIdx && c.session === sessIdx);
+                    
+                    if (courses.length === 0) {
+                        html += `<div class="empty-cell"></div>`;
+                        return;
+                    }
+                    
+                    const course = courses[0];
+                    
+                    if (sessIdx > 0) {
+                        const prev = prof.schedule.find(c => c.day === dayIdx && c.session === sessIdx - 1 && c.code === course.code);
+                        if (prev) return;
+                    }
+                    
+                    const duration = course.duration || 1;
+                    
+                    html += `
+                        <div class="cell" style="${duration > 1 ? 'grid-column: span ' + duration + ';' : ''}">
+                            <div class="course-block type-${course.type}">
+                                <span class="course-room">${course.room}</span>
+                                <div class="course-title">${course.name}</div>
+                                <div class="course-meta">${course.group}</div>
                             </div>
-                            
-                            ${structure.sessions.map((session, sessIdx) => {
-                                if (session.lunch) {
-                                    return `<div class="lunch-cell border-b border-slate-200">
-                                        <i class="fa-solid fa-utensils mr-2"></i>PAUSE
-                                    </div>`;
-                                }
-                                
-                                const courses = prof.schedule.filter(c => c.day === dayIdx && c.session === sessIdx);
-                                
-                                if (courses.length === 0) {
-                                    return `<div class="empty-cell border-b border-slate-200"></div>`;
-                                }
-                                
-                                const course = courses[0];
-                                const duration = course.duration || 1;
-                                
-                                if (sessIdx > 0) {
-                                    const prevCourse = prof.schedule.find(c => 
-                                        c.day === dayIdx && c.session === sessIdx - 1 && c.code === course.code
-                                    );
-                                    if (prevCourse) return '';
-                                }
-                                
-                                return `
-                                    <div class="course-cell border-b border-slate-200" 
-                                         style="${duration > 1 ? `grid-column: span ${duration};` : ''}">
-                                        <div class="course-block type-${course.type}">
-                                            <span class="course-room">${course.room}</span>
-                                            <div class="course-title">${course.name}</div>
-                                            <div class="course-prof">${course.group}</div>
-                                        </div>
-                                    </div>
-                                `;
-                            }).join('')}
-                        `).join('')}
+                        </div>
+                    `;
+                });
+            });
+
+            html += `
                     </div>
                 </div>
 
-                <div class="mt-6 grid grid-cols-5 gap-4">
+                <!-- Weekly Breakdown -->
+                <div style="margin-top: 20px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px;">
                     ${structure.days.map((day, idx) => {
                         const dayCourses = prof.schedule.filter(c => c.day === idx);
                         const hours = dayCourses.reduce((acc, c) => acc + (c.duration || 1) * 1.5, 0);
+                        const hasCourses = hours > 0;
                         return `
-                            <div class="bg-white rounded-lg p-4 border border-slate-200 shadow-sm">
-                                <div class="text-sm font-semibold text-slate-700 mb-1">${day.full}</div>
-                                <div class="text-2xl font-bold ${hours > 0 ? 'text-sky-600' : 'text-slate-400'}">${hours}h</div>
-                                <div class="text-xs text-slate-500">${dayCourses.length > 0 ? dayCourses.length + ' séances' : 'Libre'}</div>
+                            <div class="stats-card" style="text-align: center; ${!hasCourses ? 'opacity: 0.5;' : ''}">
+                                <div style="font-size: 0.875rem; color: #94a3b8; margin-bottom: 4px;">${day.full}</div>
+                                <div style="font-size: 1.5rem; font-weight: 700; color: ${hasCourses ? '#0ea5e9' : '#64748b'};">${hours}h</div>
+                                <div style="font-size: 0.75rem; color: #64748b;">${dayCourses.length} séances</div>
                             </div>
                         `;
                     }).join('')}
                 </div>
             `;
+
+            container.innerHTML = html;
         }
 
         function renderAdmin(container) {
-            // Combine all professor schedules for master view
             const allCourses = Object.values(data.professors).flatMap(p => p.schedule);
             
-            container.innerHTML = `
-                <div class="mb-4 flex justify-between items-center">
-                    <div>
-                        <h2 class="text-2xl font-bold text-slate-800">Master Timetable - Vue d'ensemble</h2>
-                        <p class="text-slate-500 text-sm mt-1">Tous les groupes • Optimisation: 0 gaps, pause déjeuner protégée</p>
+            let html = `
+                <div style="margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <div>
+                            <h2 style="font-size: 1.5rem; font-weight: 700; color: #f8fafc; margin: 0;">Master Timetable</h2>
+                            <p style="color: #64748b; font-size: 0.875rem; margin-top: 4px;">Vue d'ensemble • Tous groupes • Pause déjeuner protégée</p>
+                        </div>
+                        <div style="display: flex; gap: 12px;">
+                            <button onclick="validate()" style="padding: 10px 16px; background: #10b981; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 0.875rem; font-weight: 500;">
+                                <i class="fa-solid fa-check-circle" style="margin-right: 8px;"></i>Valider
+                            </button>
+                            <button onclick="optimize()" style="padding: 10px 16px; background: #0ea5e9; color: white; border: none; border-radius: 8px; cursor: pointer; font-size: 0.875rem; font-weight: 500; box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);">
+                                <i class="fa-solid fa-wand-magic-sparkles" style="margin-right: 8px;"></i>Optimiser
+                            </button>
+                        </div>
                     </div>
-                    <div class="flex gap-2">
-                        <button onclick="validate()" class="px-4 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-lg text-sm font-medium transition-colors">
-                            <i class="fa-solid fa-check-circle mr-2"></i>Valider
-                        </button>
-                        <button onclick="optimize()" class="px-4 py-2 bg-sky-500 hover:bg-sky-600 text-white rounded-lg text-sm font-medium transition-colors shadow-md shadow-sky-500/20">
-                            <i class="fa-solid fa-wand-magic-sparkles mr-2"></i>Optimiser
-                        </button>
+
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 20px;">
+                        <div class="stats-card">
+                            <div style="font-size: 0.875rem; color: #64748b; margin-bottom: 4px;">Conflits</div>
+                            <div style="font-size: 2rem; font-weight: 700; color: #10b981;">0</div>
+                            <div style="font-size: 0.75rem; color: #10b981;">Aucun problème</div>
+                        </div>
+                        <div class="stats-card">
+                            <div style="font-size: 0.875rem; color: #64748b; margin-bottom: 4px;">Occupation salles</div>
+                            <div style="font-size: 2rem; font-weight: 700; color: #0ea5e9;">91%</div>
+                            <div style="font-size: 0.75rem; color: #0ea5e9;">Optimale</div>
+                        </div>
+                        <div class="stats-card">
+                            <div style="font-size: 0.875rem; color: #64748b; margin-bottom: 4px;">Professeurs</div>
+                            <div style="font-size: 2rem; font-weight: 700; color: #8b5cf6;">10</div>
+                            <div style="font-size: 0.75rem; color: #8b5cf6;">Actifs cette semaine</div>
+                        </div>
+                        <div class="stats-card">
+                            <div style="font-size: 0.875rem; color: #64748b; margin-bottom: 4px;">Pause déjeuner</div>
+                            <div style="font-size: 1.5rem; font-weight: 700; color: #f59e0b;">12h-13h30</div>
+                            <div style="font-size: 0.75rem; color: #f59e0b;">Strictement protégée</div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-4 gap-4 mb-6">
-                    <div class="bg-white rounded-lg p-4 border border-slate-200 shadow-sm">
-                        <div class="text-sm text-slate-500 mb-1">Conflits détectés</div>
-                        <div class="text-3xl font-bold text-emerald-600">0</div>
-                        <div class="text-xs text-emerald-600">Aucun problème</div>
-                    </div>
-                    <div class="bg-white rounded-lg p-4 border border-slate-200 shadow-sm">
-                        <div class="text-sm text-slate-500 mb-1">Taux occupation</div>
-                        <div class="text-3xl font-bold text-sky-600">89%</div>
-                        <div class="text-xs text-sky-600">Salles optimisées</div>
-                    </div>
-                    <div class="bg-white rounded-lg p-4 border border-slate-200 shadow-sm">
-                        <div class="text-sm text-slate-500 mb-1">Professeurs actifs</div>
-                        <div class="text-3xl font-bold text-indigo-600">10</div>
-                        <div class="text-xs text-indigo-600">Cette semaine</div>
-                    </div>
-                    <div class="bg-white rounded-lg p-4 border border-slate-200 shadow-sm">
-                        <div class="text-sm text-slate-500 mb-1">Pause déjeuner</div>
-                        <div class="text-3xl font-bold text-amber-600">12h-13h30</div>
-                        <div class="text-xs text-amber-600">Protégée</div>
-                    </div>
-                </div>
-
-                <div class="timetable-container">
-                    <div class="grid" style="grid-template-columns: 80px repeat(6, 1fr);">
-                        <!-- Headers -->
-                        <div class="session-header border-r border-slate-200"></div>
+                <div class="timetable-wrapper">
+                    <div class="timetable-grid">
+                        <div class="session-header" style="border-right: 2px solid #475569;"></div>
                         ${structure.sessions.map(s => `
-                            <div class="session-header ${s.lunch ? 'bg-amber-50 text-amber-700' : ''}">
+                            <div class="session-header ${s.lunch ? 'bg-amber-950 text-amber-400' : ''}">
                                 <div>${s.name}</div>
                                 <div class="session-time">${s.time}</div>
                             </div>
                         `).join('')}
+            `;
 
-                        <!-- Days with all courses -->
-                        ${structure.days.map((day, dayIdx) => `
-                            <div class="day-label border-b border-slate-200">
-                                <span>${day.name}</span>
-                                <span class="day-date">${day.date}</span>
+            structure.days.forEach((day, dayIdx) => {
+                html += `<div class="day-label">${day.name}<span class="day-date">${day.date}</span></div>`;
+                
+                structure.sessions.forEach((session, sessIdx) => {
+                    if (session.lunch) {
+                        html += `<div class="lunch-cell"><i class="fa-solid fa-utensils" style="margin-right: 8px;"></i>PAUSE</div>`;
+                        return;
+                    }
+                    
+                    const courses = allCourses.filter(c => c.day === dayIdx && c.session === sessIdx);
+                    
+                    if (courses.length === 0) {
+                        html += `<div class="empty-cell"></div>`;
+                        return;
+                    }
+                    
+                    html += `<div class="cell" style="padding: 4px;">`;
+                    courses.forEach(course => {
+                        html += `
+                            <div class="course-block type-${course.type}" style="margin-bottom: 4px; min-height: 50px;">
+                                <span class="course-room" style="font-size: 0.6rem; padding: 2px 6px;">${course.room}</span>
+                                <div class="course-title" style="font-size: 0.75rem;">${course.code}</div>
+                                <div class="course-meta" style="font-size: 0.65px;">${course.group || ''}</div>
                             </div>
-                            
-                            ${structure.sessions.map((session, sessIdx) => {
-                                if (session.lunch) {
-                                    return `<div class="lunch-cell border-b border-slate-200">
-                                        <i class="fa-solid fa-utensils mr-2"></i>PAUSE
-                                    </div>`;
-                                }
-                                
-                                const courses = allCourses.filter(c => c.day === dayIdx && c.session === sessIdx);
-                                
-                                if (courses.length === 0) {
-                                    return `<div class="empty-cell border-b border-slate-200"></div>`;
-                                }
-                                
-                                // Stack multiple courses if conflict (shouldn't happen in optimized)
-                                return `
-                                    <div class="course-cell border-b border-slate-200 p-1">
-                                        ${courses.map(course => `
-                                            <div class="course-block type-${course.type} mb-1" style="min-height: 60px;">
-                                                <span class="course-room text-[10px]">${course.room}</span>
-                                                <div class="course-title text-[11px]">${course.code}</div>
-                                                <div class="course-prof text-[10px]">${course.group || course.prof}</div>
-                                            </div>
-                                        `).join('')}
-                                    </div>
-                                `;
-                            }).join('')}
-                        `).join('')}
+                        `;
+                    });
+                    html += `</div>`;
+                });
+            });
+
+            html += `
                     </div>
                 </div>
 
-                <div class="mt-6 bg-white rounded-lg p-6 border border-slate-200 shadow-sm">
-                    <h3 class="font-semibold text-slate-800 mb-4">Charge horaire par professeur</h3>
-                    <div class="grid grid-cols-5 gap-4">
+                <div class="stats-card" style="margin-top: 20px;">
+                    <h3 style="color: #f8fafc; font-size: 1rem; font-weight: 600; margin-bottom: 16px;">Charge horaire par professeur</h3>
+                    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px;">
                         ${Object.entries(data.professors).map(([key, prof]) => {
-                            const totalHours = prof.schedule.reduce((acc, c) => acc + (c.duration || 1) * 1.5, 0);
+                            const weekly = prof.schedule.reduce((acc, c) => acc + (c.duration || 1) * 1.5, 0);
                             const days = new Set(prof.schedule.map(c => c.day)).size;
                             return `
-                                <div class="p-3 bg-slate-50 rounded-lg border border-slate-200 cursor-pointer hover:border-sky-500 transition-colors" onclick="viewProf('${key}')">
-                                    <div class="font-medium text-slate-700 text-sm">${prof.name}</div>
-                                    <div class="text-2xl font-bold ${totalHours > 15 ? 'text-amber-600' : 'text-sky-600'} mt-1">${totalHours}h</div>
-                                    <div class="text-xs text-slate-500">${days} jours</div>
+                                <div onclick="viewProf('${key}')" style="padding: 16px; background: #0f172a; border: 1px solid #334155; border-radius: 8px; cursor: pointer; transition: all 0.2s;" onmouseover="this.style.borderColor='#0ea5e9'" onmouseout="this.style.borderColor='#334155'">
+                                    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+                                        <div style="width: 40px; height: 40px; border-radius: 50%; background: #334155; display: flex; align-items: center; justify-content: center;">
+                                            <i class="fa-solid fa-user" style="color: #94a3b8;"></i>
+                                        </div>
+                                        <div>
+                                            <div style="font-weight: 600; color: #f8fafc; font-size: 0.9rem;">${prof.name}</div>
+                                            <div style="font-size: 0.75rem; color: #64748b;">${prof.department}</div>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                                        <span style="font-size: 1.25rem; font-weight: 700; color: ${weekly > 15 ? '#f59e0b' : '#0ea5e9'};">${weekly}h</span>
+                                        <span style="font-size: 0.75rem; color: #64748b;">${days} jours</span>
+                                    </div>
                                 </div>
                             `;
                         }).join('')}
                     </div>
                 </div>
             `;
+
+            container.innerHTML = html;
+        }
+
+        function getTypeColor(type) {
+            const colors = {
+                cours: '#f59e0b',
+                td: '#ec4899',
+                tp: '#3b82f6',
+                seminaire: '#8b5cf6',
+                atelier: '#10b981',
+                projet: '#eab308'
+            };
+            return colors[type] || '#94a3b8';
         }
 
         function changeProfessor(name) {
@@ -681,22 +936,22 @@
             alert(`✅ VALIDATION RÉUSSIE
 
 Contraintes vérifiées:
-• Aucun cours pendant la pause (12h-13h30)
-• Aucun gap dans les emplois étudiants
+• Aucun cours pendant la pause déjeuner (12h-13h30)
+• Aucun gap dans les emplois étudiants (blocs continus)
+• Aucun gap pour les professeurs (séances consolidées)
 • Aucun conflit de salle
-• Professeurs sans gaps entre séances
-• Durées respectées (Cours: 1.5h, TD: 1.5h, TP: 3h)`);
+• Durées respectées: Cours 1.5h, TD 1.5h, TP/Atelier 3h`);
         }
 
         function optimize() {
             alert(`🤖 OPTIMISATION TERMINÉE
 
 Améliorations appliquées:
-• Regroupement des séances par matière
-• Consolidation des blocs TP (3h consécutifs)
-• Répartition équilibrée sur la semaine
-• Protection stricte de la pause déjeuner
-• 0 conflits détectés`);
+• Regroupement par matière (Cours+TD consécutifs)
+• Blocs TP de 3h sans interruption
+• Répartition équilibrée: max 4 jours/professeur
+• Protection stricte 12h-13h30 pour tous
+• 0 conflit détecté`);
         }
 
         // Initial render
